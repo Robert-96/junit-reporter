@@ -131,3 +131,7 @@ dmypy.json
 
 # VS Code
 .vscode
+
+# Tests
+report.xml
+index.html
