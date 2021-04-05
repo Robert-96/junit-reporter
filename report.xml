@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites disabled="0" errors="20" failures="22" tests="100" time="450">
+	<testsuite name="Test Suite #0" tests="10" assertions="26" disabled="0" errors="2" failures="1" skipped="2" time="45">
+		<testcase name="Test Case #0" timestamp="00:22:37.655538 - Apr 06 2021">
+			<system-out>Output: 0.</system-out>
+			<system-err>Error: 0.</system-err>
+		</testcase>
+		<testcase name="Test Case #1" time="1" timestamp="00:22:37.655618 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 1.</system-out>
+			<system-err>Error: 1.</system-err>
+		</testcase>
+		<testcase name="Test Case #2" assertions="1" time="2" timestamp="00:22:37.655650 - Apr 06 2021">
+			<system-out>Output: 2.</system-out>
+			<system-err>Error: 2.</system-err>
+		</testcase>
+		<testcase name="Test Case #3" assertions="1" time="3" timestamp="00:22:37.655673 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 3.</system-out>
+			<system-err>Error: 3.</system-err>
+		</testcase>
+		<testcase name="Test Case #4" assertions="4" time="4" timestamp="00:22:37.655699 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 4.</system-out>
+			<system-err>Error: 4.</system-err>
+		</testcase>
+		<testcase name="Test Case #5" time="5" timestamp="00:22:37.655724 - Apr 06 2021">
+			<system-out>Output: 5.</system-out>
+			<system-err>Error: 5.</system-err>
+		</testcase>
+		<testcase name="Test Case #6" assertions="6" time="6" timestamp="00:22:37.655746 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 6.</system-out>
+			<system-err>Error: 6.</system-err>
+		</testcase>
+		<testcase name="Test Case #7" assertions="1" time="7" timestamp="00:22:37.655770 - Apr 06 2021">
+			<system-out>Output: 7.</system-out>
+			<system-err>Error: 7.</system-err>
+		</testcase>
+		<testcase name="Test Case #8" assertions="8" time="8" timestamp="00:22:37.655791 - Apr 06 2021">
+			<system-out>Output: 8.</system-out>
+			<system-err>Error: 8.</system-err>
+		</testcase>
+		<testcase name="Test Case #9" assertions="5" time="9" timestamp="00:22:37.655811 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 9.</system-out>
+			<system-err>Error: 9.</system-err>
+		</testcase>
+	</testsuite>
+	<testsuite name="Test Suite #1" tests="10" assertions="18" disabled="0" errors="2" failures="3" skipped="4" time="45">
+		<testcase name="Test Case #0" timestamp="00:22:37.655848 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 0.</system-out>
+			<system-err>Error: 0.</system-err>
+		</testcase>
+		<testcase name="Test Case #1" assertions="1" time="1" timestamp="00:22:37.655874 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 1.</system-out>
+			<system-err>Error: 1.</system-err>
+		</testcase>
+		<testcase name="Test Case #2" time="2" timestamp="00:22:37.655897 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 2.</system-out>
+			<system-err>Error: 2.</system-err>
+		</testcase>
+		<testcase name="Test Case #3" assertions="2" time="3" timestamp="00:22:37.655922 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 3.</system-out>
+			<system-err>Error: 3.</system-err>
+		</testcase>
+		<testcase name="Test Case #4" assertions="1" time="4" timestamp="00:22:37.655945 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 4.</system-out>
+			<system-err>Error: 4.</system-err>
+		</testcase>
+		<testcase name="Test Case #5" assertions="4" time="5" timestamp="00:22:37.655969 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 5.</system-out>
+			<system-err>Error: 5.</system-err>
+		</testcase>
+		<testcase name="Test Case #6" assertions="1" time="6" timestamp="00:22:37.655993 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 6.</system-out>
+			<system-err>Error: 6.</system-err>
+		</testcase>
+		<testcase name="Test Case #7" assertions="3" time="7" timestamp="00:22:37.656018 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 7.</system-out>
+			<system-err>Error: 7.</system-err>
+		</testcase>
+		<testcase name="Test Case #8" assertions="1" time="8" timestamp="00:22:37.656042 - Apr 06 2021">
+			<system-out>Output: 8.</system-out>
+			<system-err>Error: 8.</system-err>
+		</testcase>
+		<testcase name="Test Case #9" assertions="5" time="9" timestamp="00:22:37.656062 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 9.</system-out>
+			<system-err>Error: 9.</system-err>
+		</testcase>
+	</testsuite>
+	<testsuite name="Test Suite #2" tests="10" assertions="24" disabled="0" errors="0" failures="4" skipped="2" time="45">
+		<testcase name="Test Case #0" timestamp="00:22:37.656094 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 0.</system-out>
+			<system-err>Error: 0.</system-err>
+		</testcase>
+		<testcase name="Test Case #1" assertions="1" time="1" timestamp="00:22:37.656119 - Apr 06 2021">
+			<system-out>Output: 1.</system-out>
+			<system-err>Error: 1.</system-err>
+		</testcase>
+		<testcase name="Test Case #2" time="2" timestamp="00:22:37.656140 - Apr 06 2021">
+			<system-out>Output: 2.</system-out>
+			<system-err>Error: 2.</system-err>
+		</testcase>
+		<testcase name="Test Case #3" time="3" timestamp="00:22:37.656160 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 3.</system-out>
+			<system-err>Error: 3.</system-err>
+		</testcase>
+		<testcase name="Test Case #4" assertions="4" time="4" timestamp="00:22:37.656184 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 4.</system-out>
+			<system-err>Error: 4.</system-err>
+		</testcase>
+		<testcase name="Test Case #5" assertions="1" time="5" timestamp="00:22:37.656208 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 5.</system-out>
+			<system-err>Error: 5.</system-err>
+		</testcase>
+		<testcase name="Test Case #6" assertions="2" time="6" timestamp="00:22:37.656231 - Apr 06 2021">
+			<system-out>Output: 6.</system-out>
+			<system-err>Error: 6.</system-err>
+		</testcase>
+		<testcase name="Test Case #7" assertions="2" time="7" timestamp="00:22:37.656252 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 7.</system-out>
+			<system-err>Error: 7.</system-err>
+		</testcase>
+		<testcase name="Test Case #8" assertions="5" time="8" timestamp="00:22:37.656276 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 8.</system-out>
+			<system-err>Error: 8.</system-err>
+		</testcase>
+		<testcase name="Test Case #9" assertions="9" time="9" timestamp="00:22:37.656300 - Apr 06 2021">
+			<system-out>Output: 9.</system-out>
+			<system-err>Error: 9.</system-err>
+		</testcase>
+	</testsuite>
+	<testsuite name="Test Suite #3" tests="10" assertions="31" disabled="0" errors="1" failures="1" skipped="4" time="45">
+		<testcase name="Test Case #0" timestamp="00:22:37.656329 - Apr 06 2021">
+			<system-out>Output: 0.</system-out>
+			<system-err>Error: 0.</system-err>
+		</testcase>
+		<testcase name="Test Case #1" time="1" timestamp="00:22:37.656352 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 1.</system-out>
+			<system-err>Error: 1.</system-err>
+		</testcase>
+		<testcase name="Test Case #2" assertions="2" time="2" timestamp="00:22:37.656375 - Apr 06 2021">
+			<system-out>Output: 2.</system-out>
+			<system-err>Error: 2.</system-err>
+		</testcase>
+		<testcase name="Test Case #3" assertions="3" time="3" timestamp="00:22:37.656396 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 3.</system-out>
+			<system-err>Error: 3.</system-err>
+		</testcase>
+		<testcase name="Test Case #4" assertions="4" time="4" timestamp="00:22:37.656420 - Apr 06 2021">
+			<system-out>Output: 4.</system-out>
+			<system-err>Error: 4.</system-err>
+		</testcase>
+		<testcase name="Test Case #5" assertions="5" time="5" timestamp="00:22:37.656441 - Apr 06 2021">
+			<system-out>Output: 5.</system-out>
+			<system-err>Error: 5.</system-err>
+		</testcase>
+		<testcase name="Test Case #6" assertions="4" time="6" timestamp="00:22:37.656462 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 6.</system-out>
+			<system-err>Error: 6.</system-err>
+		</testcase>
+		<testcase name="Test Case #7" assertions="5" time="7" timestamp="00:22:37.656486 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 7.</system-out>
+			<system-err>Error: 7.</system-err>
+		</testcase>
+		<testcase name="Test Case #8" time="8" timestamp="00:22:37.656516 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 8.</system-out>
+			<system-err>Error: 8.</system-err>
+		</testcase>
+		<testcase name="Test Case #9" assertions="8" time="9" timestamp="00:22:37.656544 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 9.</system-out>
+			<system-err>Error: 9.</system-err>
+		</testcase>
+	</testsuite>
+	<testsuite name="Test Suite #4" tests="10" assertions="36" disabled="0" errors="2" failures="1" skipped="4" time="45">
+		<testcase name="Test Case #0" timestamp="00:22:37.656577 - Apr 06 2021">
+			<system-out>Output: 0.</system-out>
+			<system-err>Error: 0.</system-err>
+		</testcase>
+		<testcase name="Test Case #1" time="1" timestamp="00:22:37.656599 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 1.</system-out>
+			<system-err>Error: 1.</system-err>
+		</testcase>
+		<testcase name="Test Case #2" assertions="2" time="2" timestamp="00:22:37.656624 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 2.</system-out>
+			<system-err>Error: 2.</system-err>
+		</testcase>
+		<testcase name="Test Case #3" assertions="3" time="3" timestamp="00:22:37.656648 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 3.</system-out>
+			<system-err>Error: 3.</system-err>
+		</testcase>
+		<testcase name="Test Case #4" assertions="3" time="4" timestamp="00:22:37.656673 - Apr 06 2021">
+			<system-out>Output: 4.</system-out>
+			<system-err>Error: 4.</system-err>
+		</testcase>
+		<testcase name="Test Case #5" assertions="2" time="5" timestamp="00:22:37.656698 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 5.</system-out>
+			<system-err>Error: 5.</system-err>
+		</testcase>
+		<testcase name="Test Case #6" assertions="3" time="6" timestamp="00:22:37.656724 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 6.</system-out>
+			<system-err>Error: 6.</system-err>
+		</testcase>
+		<testcase name="Test Case #7" assertions="7" time="7" timestamp="00:22:37.656751 - Apr 06 2021">
+			<system-out>Output: 7.</system-out>
+			<system-err>Error: 7.</system-err>
+		</testcase>
+		<testcase name="Test Case #8" assertions="8" time="8" timestamp="00:22:37.656776 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 8.</system-out>
+			<system-err>Error: 8.</system-err>
+		</testcase>
+		<testcase name="Test Case #9" assertions="8" time="9" timestamp="00:22:37.656802 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 9.</system-out>
+			<system-err>Error: 9.</system-err>
+		</testcase>
+	</testsuite>
+	<testsuite name="Test Suite #5" tests="10" assertions="18" disabled="0" errors="4" failures="3" skipped="2" time="45">
+		<testcase name="Test Case #0" timestamp="00:22:37.656846 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 0.</system-out>
+			<system-err>Error: 0.</system-err>
+		</testcase>
+		<testcase name="Test Case #1" time="1" timestamp="00:22:37.656874 - Apr 06 2021">
+			<system-out>Output: 1.</system-out>
+			<system-err>Error: 1.</system-err>
+		</testcase>
+		<testcase name="Test Case #2" assertions="1" time="2" timestamp="00:22:37.656894 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 2.</system-out>
+			<system-err>Error: 2.</system-err>
+		</testcase>
+		<testcase name="Test Case #3" assertions="2" time="3" timestamp="00:22:37.656918 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 3.</system-out>
+			<system-err>Error: 3.</system-err>
+		</testcase>
+		<testcase name="Test Case #4" time="4" timestamp="00:22:37.656941 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 4.</system-out>
+			<system-err>Error: 4.</system-err>
+		</testcase>
+		<testcase name="Test Case #5" assertions="1" time="5" timestamp="00:22:37.656965 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 5.</system-out>
+			<system-err>Error: 5.</system-err>
+		</testcase>
+		<testcase name="Test Case #6" assertions="3" time="6" timestamp="00:22:37.656996 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 6.</system-out>
+			<system-err>Error: 6.</system-err>
+		</testcase>
+		<testcase name="Test Case #7" assertions="6" time="7" timestamp="00:22:37.657021 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 7.</system-out>
+			<system-err>Error: 7.</system-err>
+		</testcase>
+		<testcase name="Test Case #8" assertions="3" time="8" timestamp="00:22:37.657045 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 8.</system-out>
+			<system-err>Error: 8.</system-err>
+		</testcase>
+		<testcase name="Test Case #9" assertions="2" time="9" timestamp="00:22:37.657070 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 9.</system-out>
+			<system-err>Error: 9.</system-err>
+		</testcase>
+	</testsuite>
+	<testsuite name="Test Suite #6" tests="10" assertions="18" disabled="0" errors="1" failures="4" skipped="4" time="45">
+		<testcase name="Test Case #0" timestamp="00:22:37.657103 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 0.</system-out>
+			<system-err>Error: 0.</system-err>
+		</testcase>
+		<testcase name="Test Case #1" time="1" timestamp="00:22:37.657127 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 1.</system-out>
+			<system-err>Error: 1.</system-err>
+		</testcase>
+		<testcase name="Test Case #2" time="2" timestamp="00:22:37.657151 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 2.</system-out>
+			<system-err>Error: 2.</system-err>
+		</testcase>
+		<testcase name="Test Case #3" assertions="3" time="3" timestamp="00:22:37.657175 - Apr 06 2021">
+			<system-out>Output: 3.</system-out>
+			<system-err>Error: 3.</system-err>
+		</testcase>
+		<testcase name="Test Case #4" assertions="1" time="4" timestamp="00:22:37.657195 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 4.</system-out>
+			<system-err>Error: 4.</system-err>
+		</testcase>
+		<testcase name="Test Case #5" assertions="5" time="5" timestamp="00:22:37.657222 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 5.</system-out>
+			<system-err>Error: 5.</system-err>
+		</testcase>
+		<testcase name="Test Case #6" assertions="3" time="6" timestamp="00:22:37.657247 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 6.</system-out>
+			<system-err>Error: 6.</system-err>
+		</testcase>
+		<testcase name="Test Case #7" assertions="5" time="7" timestamp="00:22:37.657273 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 7.</system-out>
+			<system-err>Error: 7.</system-err>
+		</testcase>
+		<testcase name="Test Case #8" assertions="1" time="8" timestamp="00:22:37.657299 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 8.</system-out>
+			<system-err>Error: 8.</system-err>
+		</testcase>
+		<testcase name="Test Case #9" time="9" timestamp="00:22:37.657323 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 9.</system-out>
+			<system-err>Error: 9.</system-err>
+		</testcase>
+	</testsuite>
+	<testsuite name="Test Suite #7" tests="10" assertions="22" disabled="0" errors="2" failures="1" skipped="5" time="45">
+		<testcase name="Test Case #0" timestamp="00:22:37.657355 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 0.</system-out>
+			<system-err>Error: 0.</system-err>
+		</testcase>
+		<testcase name="Test Case #1" time="1" timestamp="00:22:37.657379 - Apr 06 2021">
+			<system-out>Output: 1.</system-out>
+			<system-err>Error: 1.</system-err>
+		</testcase>
+		<testcase name="Test Case #2" assertions="1" time="2" timestamp="00:22:37.657400 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 2.</system-out>
+			<system-err>Error: 2.</system-err>
+		</testcase>
+		<testcase name="Test Case #3" time="3" timestamp="00:22:37.657424 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 3.</system-out>
+			<system-err>Error: 3.</system-err>
+		</testcase>
+		<testcase name="Test Case #4" assertions="4" time="4" timestamp="00:22:37.657448 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 4.</system-out>
+			<system-err>Error: 4.</system-err>
+		</testcase>
+		<testcase name="Test Case #5" time="5" timestamp="00:22:37.657472 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 5.</system-out>
+			<system-err>Error: 5.</system-err>
+		</testcase>
+		<testcase name="Test Case #6" assertions="3" time="6" timestamp="00:22:37.657496 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 6.</system-out>
+			<system-err>Error: 6.</system-err>
+		</testcase>
+		<testcase name="Test Case #7" assertions="5" time="7" timestamp="00:22:37.657519 - Apr 06 2021">
+			<system-out>Output: 7.</system-out>
+			<system-err>Error: 7.</system-err>
+		</testcase>
+		<testcase name="Test Case #8" assertions="5" time="8" timestamp="00:22:37.657542 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 8.</system-out>
+			<system-err>Error: 8.</system-err>
+		</testcase>
+		<testcase name="Test Case #9" assertions="4" time="9" timestamp="00:22:37.657568 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 9.</system-out>
+			<system-err>Error: 9.</system-err>
+		</testcase>
+	</testsuite>
+	<testsuite name="Test Suite #8" tests="10" assertions="22" disabled="0" errors="2" failures="1" skipped="5" time="45">
+		<testcase name="Test Case #0" timestamp="00:22:37.657600 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 0.</system-out>
+			<system-err>Error: 0.</system-err>
+		</testcase>
+		<testcase name="Test Case #1" time="1" timestamp="00:22:37.657625 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 1.</system-out>
+			<system-err>Error: 1.</system-err>
+		</testcase>
+		<testcase name="Test Case #2" assertions="2" time="2" timestamp="00:22:37.657649 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 2.</system-out>
+			<system-err>Error: 2.</system-err>
+		</testcase>
+		<testcase name="Test Case #3" assertions="2" time="3" timestamp="00:22:37.657672 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 3.</system-out>
+			<system-err>Error: 3.</system-err>
+		</testcase>
+		<testcase name="Test Case #4" time="4" timestamp="00:22:37.657696 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 4.</system-out>
+			<system-err>Error: 4.</system-err>
+		</testcase>
+		<testcase name="Test Case #5" assertions="4" time="5" timestamp="00:22:37.657720 - Apr 06 2021">
+			<system-out>Output: 5.</system-out>
+			<system-err>Error: 5.</system-err>
+		</testcase>
+		<testcase name="Test Case #6" assertions="1" time="6" timestamp="00:22:37.657741 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 6.</system-out>
+			<system-err>Error: 6.</system-err>
+		</testcase>
+		<testcase name="Test Case #7" assertions="4" time="7" timestamp="00:22:37.657765 - Apr 06 2021">
+			<system-out>Output: 7.</system-out>
+			<system-err>Error: 7.</system-err>
+		</testcase>
+		<testcase name="Test Case #8" assertions="2" time="8" timestamp="00:22:37.657787 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 8.</system-out>
+			<system-err>Error: 8.</system-err>
+		</testcase>
+		<testcase name="Test Case #9" assertions="7" time="9" timestamp="00:22:37.657810 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 9.</system-out>
+			<system-err>Error: 9.</system-err>
+		</testcase>
+	</testsuite>
+	<testsuite name="Test Suite #9" tests="10" assertions="27" disabled="0" errors="4" failures="3" skipped="1" time="45">
+		<testcase name="Test Case #0" timestamp="00:22:37.657845 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 0.</system-out>
+			<system-err>Error: 0.</system-err>
+		</testcase>
+		<testcase name="Test Case #1" time="1" timestamp="00:22:37.657871 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 1.</system-out>
+			<system-err>Error: 1.</system-err>
+		</testcase>
+		<testcase name="Test Case #2" assertions="2" time="2" timestamp="00:22:37.657895 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 2.</system-out>
+			<system-err>Error: 2.</system-err>
+		</testcase>
+		<testcase name="Test Case #3" assertions="3" time="3" timestamp="00:22:37.657920 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 3.</system-out>
+			<system-err>Error: 3.</system-err>
+		</testcase>
+		<testcase name="Test Case #4" time="4" timestamp="00:22:37.657943 - Apr 06 2021">
+			<failure type="AssertError" message="AssertError: Invalid arguments."/>
+			<system-out>Output: 4.</system-out>
+			<system-err>Error: 4.</system-err>
+		</testcase>
+		<testcase name="Test Case #5" assertions="2" time="5" timestamp="00:22:37.657970 - Apr 06 2021">
+			<skipped type="skipped" message="Skiped."/>
+			<system-out>Output: 5.</system-out>
+			<system-err>Error: 5.</system-err>
+		</testcase>
+		<testcase name="Test Case #6" assertions="3" time="6" timestamp="00:22:37.657994 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 6.</system-out>
+			<system-err>Error: 6.</system-err>
+		</testcase>
+		<testcase name="Test Case #7" assertions="7" time="7" timestamp="00:22:37.658017 - Apr 06 2021">
+			<error type="ValueError" message="ValueError: Invalid arguments."/>
+			<system-out>Output: 7.</system-out>
+			<system-err>Error: 7.</system-err>
+		</testcase>
+		<testcase name="Test Case #8" assertions="8" time="8" timestamp="00:22:37.658040 - Apr 06 2021">
+			<system-out>Output: 8.</system-out>
+			<system-err>Error: 8.</system-err>
+		</testcase>
+		<testcase name="Test Case #9" assertions="2" time="9" timestamp="00:22:37.658061 - Apr 06 2021">
+			<system-out>Output: 9.</system-out>
+			<system-err>Error: 9.</system-err>
+		</testcase>
+	</testsuite>
+</testsuites>

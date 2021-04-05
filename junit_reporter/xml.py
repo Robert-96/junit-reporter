@@ -1,0 +1,474 @@
+"""Generates test results in the standard JUnit XML format for use with Jenkins and other build integration servers."""
+
+import sys
+import re
+import logging
+import xml.etree.ElementTree as ET
+import xml.dom.minidom
+from collections import defaultdict
+
+
+logger = logging.getLogger(__name__)
+
+
+def xml_safe(value):
+    """Replaces invalid `XML characters`_ with '?'.
+
+    .. _XML characters:
+       https://www.w3.org/TR/xml11/#charsets
+
+    """
+
+    # The characters defined in the following ranges are discouraged.
+    # They are either control characters or permanently undefined Unicode characters:
+    illegal_characters = [
+        (0x00, 0x08),
+        (0x0B, 0x1F),
+        (0x7F, 0x84),
+        (0x86, 0x9F),
+        (0xD800, 0xDFFF),
+        (0xFDD0, 0xFDDF),
+        (0xFFFE, 0xFFFF),
+        (0x1FFFE, 0x1FFFF),
+        (0x2FFFE, 0x2FFFF),
+        (0x3FFFE, 0x3FFFF),
+        (0x4FFFE, 0x4FFFF),
+        (0x5FFFE, 0x5FFFF),
+        (0x6FFFE, 0x6FFFF),
+        (0x7FFFE, 0x7FFFF),
+        (0x8FFFE, 0x8FFFF),
+        (0x9FFFE, 0x9FFFF),
+        (0xAFFFE, 0xAFFFF),
+        (0xBFFFE, 0xBFFFF),
+        (0xCFFFE, 0xCFFFF),
+        (0xDFFFE, 0xDFFFF),
+        (0xEFFFE, 0xEFFFF),
+        (0xFFFFE, 0xFFFFF),
+        (0x10FFFE, 0x10FFFF),
+    ]
+
+    illegal_ranges = [
+        "{}-{}".format(chr(low), chr(high)) for (low, high) in illegal_characters if low < sys.maxunicode
+    ]
+
+    illegal_regex = re.compile("[{}]".format("".join(illegal_ranges)))
+    return illegal_regex.sub("?", value)
+
+
+class TestCase:
+    """A JUnit test case result that contains information about the execution of a test case (e.g. stdout, stderr).
+
+    Args:
+        name (:obj:`str`): The display name of the test case.
+        classname (:obj:`str`): The full name of the class.
+        status (:obj:`str`): The status of the test case.
+        category (:obj:`str`): The category of the test case.
+        stdout (:obj:`str`): The data written to ``stdout`` during the test execution.
+        stderr (:obj:`str`): The data written to ``stderr`` during the test execution.
+        assertions (:obj:`int`): The total number of asserts run in the test cases.
+        timestamp (:obj:`str`): The time when the test case execution started.
+        elapsed_seconds (:obj:`float`, :obj:`int`): The time, in fractional seconds, spent running the tests.
+        filename (:obj:`str`): The full file name of the test case.
+        line (:obj:`int`): The full line number of the test case.
+        log (:obj:`str`): -.
+        url (:obj:`str`): -.
+        enabled (:obj:`bool`): -.
+        allow_multiple_subelements (:obj:`bool`): -.
+
+    """
+
+    def __init__(self, name, classname=None, stdout=None, stderr=None, assertions=None, timestamp=None,
+                 elapsed_seconds=None, status=None, category=None, filename=None, line=None, log=None, url=None,
+                 enabled=True, allow_multiple_subelements=False):
+
+        self.name = name
+        self.classname = classname
+
+        self.stdout = stdout
+        self.stderr = stderr
+
+        self.timestamp = timestamp
+        self.elapsed_seconds = elapsed_seconds
+
+        self.status = status
+        self.category = category
+
+        self.filename = filename
+        self.line = line
+        self.log = log
+        self.url = url
+
+        self.assertions = assertions
+
+        self.enabled = enabled
+        self.errors = []
+        self.failures = []
+        self.skipped = []
+
+        self.allow_multiple_subelements = allow_multiple_subelements
+
+    @property
+    def is_enabled(self):
+        """Returns ``True`` if this test case is enabled."""
+
+        return self.enabled
+
+    @property
+    def is_failure(self):
+        """Returns ``True`` if this test case is a failure."""
+
+        return sum(1 for failure in self.failures if failure["message"] or failure["output"]) > 0
+
+    @property
+    def is_error(self):
+        """Returns ``True`` if this test case is an error."""
+
+        return sum(1 for error in self.errors if error["message"] or error["output"]) > 0
+
+    @property
+    def is_skipped(self):
+        """Returns ``True`` if this test case has been skipped."""
+
+        return len(self.skipped) > 0
+
+    @property
+    def attributes(self):
+        attributes = dict()
+        attributes["name"] = str(self.name)
+
+        if self.assertions:
+            attributes["assertions"] = str(self.assertions)
+        if self.elapsed_seconds:
+            attributes["time"] = str(self.elapsed_seconds)
+        if self.timestamp:
+            attributes["timestamp"] = str(self.timestamp)
+        if self.classname:
+            attributes["classname"] = str(self.classname)
+        if self.status:
+            attributes["status"] = str(self.status)
+        if self.category:
+            attributes["class"] = str(self.category)
+        if self.filename:
+            attributes["file"] = str(self.filename)
+        if self.line:
+            attributes["line"] = str(self.line)
+        if self.log:
+            attributes["log"] = str(self.log)
+        if self.url:
+            attributes["url"] = str(self.url)
+
+        return attributes
+
+    def _error_xml(self, root_element):
+        """Generates the error XML."""
+
+        for error in self.errors:
+            if error["message"] or error["output"]:
+                attributes = {"type": "error"}
+
+                if error["message"]:
+                    attributes["message"] = str(error["message"])
+
+                if error["type"]:
+                    attributes["type"] = str(error["type"])
+
+                error_element = ET.Element("error", attributes)
+
+                if error["output"]:
+                    error_element.text = str(error["output"])
+
+                root_element.append(error_element)
+
+    def _failure_xml(self, root_element):
+        """Generates the failure XML."""
+
+        for failure in self.failures:
+            if failure["output"] or failure["message"]:
+                attributes = {"type": "failure"}
+
+                if failure["message"]:
+                    attributes["message"] = str(failure["message"])
+
+                if failure["type"]:
+                    attributes["type"] = str(failure["type"])
+
+                failure_element = ET.Element("failure", attributes)
+
+                if failure["output"]:
+                    failure_element.text = str(failure["output"])
+
+                root_element.append(failure_element)
+
+    def _skipped_xml(self, root_element):
+        """Generates the skipped XML."""
+
+        for skipped in self.skipped:
+            attributes = {"type": "skipped"}
+
+            if skipped["message"]:
+                attributes["message"] = str(skipped["message"])
+
+            skipped_element = ET.Element("skipped", attributes)
+
+            if skipped["output"]:
+                skipped_element.text = str(skipped["output"])
+
+            root_element.append(skipped_element)
+
+    def _xml(self, root_element):
+        """Generates the test case XML."""
+
+        element = ET.SubElement(root_element, "testcase", self.attributes)
+
+        self._error_xml(element)
+        self._failure_xml(element)
+        self._skipped_xml(element)
+
+        if self.stdout:
+            stdout_element = ET.Element("system-out")
+            stdout_element.text = str(self.stdout)
+            element.append(stdout_element)
+
+        if self.stderr:
+            stderr_element = ET.Element("system-err")
+            stderr_element.text = str(self.stderr)
+            element.append(stderr_element)
+
+    def add_error(self, message=None, output=None, error_type=None):
+        """Adds an error message, output, or both to the test case.
+
+        Args:
+            message (:obj:`str`): -.
+            output (:obj:`str`): -.
+            error_type (:obj:`str`): -.
+
+        """
+
+        error = {
+            "message": message,
+            "output": output,
+            "type": error_type
+        }
+
+        if self.allow_multiple_subelements:
+            if message or output:
+                self.errors.append(error)
+        else:
+            self.errors = [error]
+
+    def add_failure(self, message=None, output=None, failure_type=None):
+        """Adds a failure message, output, or both to the test case.
+
+        Args:
+            message (:obj:`str`): -.
+            output (:obj:`str`): -.
+            error_type (:obj:`str`): -.
+
+        """
+
+        failure = {
+            "message": message,
+            "output": output,
+            "type": failure_type
+        }
+
+        if self.allow_multiple_subelements:
+            if message or output:
+                self.failures.append(failure)
+        else:
+            self.failures = [failure]
+
+    def add_skipped(self, message=None, output=None):
+        """Adds a skipped message, output, or both to the test case.
+
+        Args:
+            message (:obj:`str`): -.
+            output (:obj:`str`): -.
+            error_type (:obj:`str`): -.
+
+        """
+
+        skipped = {
+            "message": message,
+            "output": output
+        }
+
+        if self.allow_multiple_subelements:
+            if message or output:
+                self.skipped.append(skipped)
+        else:
+            self.skipped = [skipped]
+
+
+class TestSuite:
+    """A JUnit test suite result that contains information about the execution of a test case."""
+
+    def __init__(self, name, test_cases=None, hostname=None, id=None, package=None, timestamp=None, properties=None,
+                 filename=None, log=None, url=None, stdout=None, stderr=None):
+
+        self.name = name
+        self.test_cases = test_cases or []
+
+        self.timestamp = timestamp
+        self.hostname = hostname
+        self.id = id
+        self.package = package
+        self.filename = filename
+        self.log = log
+        self.url = url
+        self.stdout = stdout
+        self.stderr = stderr
+        self.properties = properties
+
+    @property
+    def assertions(self):
+        return sum(int(test_case.assertions) for test_case in self.test_cases if test_case.assertions)
+
+    @property
+    def disabled(self):
+        return sum(1 for test_case in self.test_cases if not test_case.is_enabled)
+
+    @property
+    def errors(self):
+        return sum(1 for test_case in self.test_cases if test_case.is_error)
+
+    @property
+    def failures(self):
+        return sum(1 for test_case in self.test_cases if test_case.is_failure)
+
+    @property
+    def skipped(self):
+        return sum(1 for test_case in self.test_cases if test_case.is_skipped)
+
+    @property
+    def tests(self):
+        return len(self.test_cases)
+
+    @property
+    def time(self):
+        return sum(test_case.elapsed_seconds for test_case in self.test_cases if test_case.elapsed_seconds)
+
+    @property
+    def attributes(self):
+        attributes = dict()
+
+        attributes["name"] = str(self.name)
+
+        if self.hostname:
+            attributes["hostname"] = str(self.hostname)
+        if self.id:
+            attributes["id"] = str(self.id)
+        if self.package:
+            attributes["package"] = str(self.package)
+        if self.timestamp:
+            attributes["timestamp"] = str(self.timestamp)
+        if self.filename:
+            attributes["file"] = str(self.filename)
+        if self.log:
+            attributes["log"] = str(self.log)
+        if self.url:
+            attributes["url"] = str(self.url)
+
+        attributes["tests"] = str(len(self.test_cases))
+        attributes["assertions"] = str(self.assertions)
+        attributes["disabled"] = str(self.disabled)
+        attributes["errors"] = str(self.errors)
+        attributes["failures"] = str(self.failures)
+        attributes["skipped"] = str(self.skipped)
+        attributes["time"] = str(self.time)
+
+        return attributes
+
+    def _properties_xml(self, root_element):
+        """Generates the properties XML."""
+
+        properties_element = ET.SubElement(root_element, "properties")
+
+        for key, value in self.properties.items():
+            attributes = {
+                "name": str(key),
+                "value": str(value)
+            }
+
+            ET.SubElement(properties_element, "property", attributes)
+
+    def _xml(self):
+        """Generates the XML document for the JUnit test suites."""
+
+        xml_element = ET.Element("testsuite", self.attributes)
+
+        if self.properties:
+            self._properties_xml(xml_element)
+
+        if self.stdout:
+            stdout_element = ET.SubElement(xml_element, "system-out")
+            stdout_element.text = str(self.stdout)
+
+        if self.stderr:
+            stderr_element = ET.SubElement(xml_element, "system-err")
+            stderr_element.text = str(self.stderr)
+
+        for test_case in self.test_cases:
+            test_case._xml(xml_element)
+
+        return xml_element
+
+
+class TestReporter:
+    """Generate a JUnit XML."""
+
+    def __init__(self, test_suites):
+        self.test_suites = test_suites
+
+    @property
+    def attributes(self):
+        attributes = defaultdict(int)
+
+        for test_suit in self.test_suites:
+            for key in ["disabled", "errors", "failures", "tests", "time"]:
+                attributes[key] += getattr(test_suit, key)
+
+            # for key in ["time"]:
+            #     attributes[key] += float(test_suit_xml.get(key, 0))
+
+        return attributes
+
+    def xml(self, prettyprint=True, encoding=None):
+        """Generate the JUnit XML."""
+
+        encoding = encoding or "utf-8"
+        xml_element = ET.Element("testsuites")
+
+        for test_suit in self.test_suites:
+            test_suit_xml = test_suit._xml()
+            xml_element.append(test_suit_xml)
+
+        for key, value in self.attributes.items():
+            xml_element.set(key, str(value))
+
+        xml_string = ET.tostring(xml_element, encoding=encoding)
+        xml_string = xml_safe(xml_string.decode(encoding))
+
+        if prettyprint:
+            xml_string = xml_string.encode(encoding)
+            xml_string = xml.dom.minidom.parseString(xml_string)
+            xml_string = xml_string.toprettyxml(encoding=encoding)
+            xml_string = xml_string.decode(encoding)
+
+        return xml_string
+
+    def save(self, filename="report.xml", prettyprint=True, encoding=None):
+        xml_string = self.xml(prettyprint=prettyprint, encoding=encoding)
+
+        with open(filename, "w") as fp:
+            fp.write(xml_string)
+
+    @classmethod
+    def xml_report(cls, test_suites, prettyprint=True, encoding=None):
+        junit_xml = cls(test_suites)
+        return junit_xml.xml(prettyprint=prettyprint, encoding=encoding)
+
+    @classmethod
+    def save_xml_report(cls, test_suites, filename="report.xml", prettyprint=True, encoding=None):
+        junit_xml = cls(test_suites)
+        return junit_xml.save(filename=filename, prettyprint=prettyprint, encoding=encoding)
