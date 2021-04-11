@@ -17,14 +17,25 @@ Create a test report:
 ```python
 from junit_reporter import TestCase, TestSuite, TestReporter
 
-# ...
+test_case = TestCase('Test #1', classname='some.class.name', stdout='I am stdout!', stderr='I am stderr!')
+test_suite = TestSuite('Test Suite #1', [test_case])
+
+xml = TestReporter.report_to_string([test_suite])
 ```
 
-Produces the following output:
+It produces the following output:
 
-.. code-block:: xml
-
-    <test></test>
+```xml
+<?xml version="1.0" ?>
+<testsuites disabled="0" errors="0" failures="0" tests="1" time="0">
+    <testsuite name="Test Suite #1" tests="1" assertions="0" disabled="0" errors="0" failures="0" skipped="0" time="0">
+        <testcase name="Test #1" classname="some.class.name">
+            <system-out>I am stdout!</system-out>
+            <system-err>I am stderr!</system-err>
+        </testcase>
+    </testsuite>
+</testsuites>
+```
 
 ## Running the tests
 
