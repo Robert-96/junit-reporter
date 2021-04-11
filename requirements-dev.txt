@@ -1,2 +1,9 @@
+flake8
+doc8
+
 pytest
 pytest-cov
+
+sphinx
+sphinx-rtd-theme
+recommonmark
