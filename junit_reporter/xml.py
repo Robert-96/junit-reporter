@@ -1,10 +1,10 @@
 """Generates test results in the standard JUnit XML format for use with Jenkins and other build integration servers."""
 
-import sys
 import re
+import sys
 import logging
-import xml.etree.ElementTree as ET
 import xml.dom.minidom
+import xml.etree.ElementTree as ET
 from collections import defaultdict
 
 
@@ -56,7 +56,7 @@ def xml_safe(value):
 
 
 class TestCase:
-    """A JUnit test case result that contains information about the execution of a test case (e.g. stdout, stderr).
+    """A class that contains information about the execution of a single test case.
 
     Args:
         name (:obj:`str`): The display name of the test case.
@@ -69,10 +69,10 @@ class TestCase:
         timestamp (:obj:`str`): The time when the test case execution started.
         elapsed_seconds (:obj:`float`, :obj:`int`): The time, in fractional seconds, spent running the tests.
         filename (:obj:`str`): The full file name of the test case.
-        line (:obj:`int`): The full line number of the test case.
-        log (:obj:`str`): -.
-        url (:obj:`str`): -.
-        enabled (:obj:`bool`): -.
+        line (:obj:`int`): The line number of the test case.
+        log (:obj:`str`): The log of the test case.
+        url (:obj:`str`): The url of the test case.
+        enabled (:obj:`bool`): If set to ``False`` mark the test case as disabled.
         allow_multiple_subelements (:obj:`bool`): -.
 
     """
@@ -114,16 +114,16 @@ class TestCase:
         return self.enabled
 
     @property
-    def is_failure(self):
-        """Returns ``True`` if this test case is a failure."""
-
-        return sum(1 for failure in self.failures if failure["message"] or failure["output"]) > 0
-
-    @property
     def is_error(self):
         """Returns ``True`` if this test case is an error."""
 
         return sum(1 for error in self.errors if error["message"] or error["output"]) > 0
+
+    @property
+    def is_failure(self):
+        """Returns ``True`` if this test case is a failure."""
+
+        return sum(1 for failure in self.failures if failure["message"] or failure["output"]) > 0
 
     @property
     def is_skipped(self):
@@ -301,10 +301,27 @@ class TestCase:
 
 
 class TestSuite:
-    """A JUnit test suite result that contains information about the execution of a test case."""
+    """A class that contains information about the execution of a single test suite.
 
-    def __init__(self, name, test_cases=None, hostname=None, id=None, package=None, timestamp=None, properties=None,
-                 filename=None, log=None, url=None, stdout=None, stderr=None):
+    It also contains information about failures/errors related to the test suite.
+
+    Args:
+        test_cases (:obj:`list`): A list of :class:`~TestCase`.
+        id (:obj:`str`): The id of the test suite.
+        stdout (:obj:`str`): The data written to ``stdout`` during the test execution.
+        stderr (:obj:`str`): The data written to ``stderr`` during the test execution.
+        package (:obj:`str`): The package name of the test suite.
+        hostname (:obj:`str`): The hostname of the test suite.
+        filename (:obj:`str`): The full file name of the test suite.
+        log (:obj:`str`): The log of the test suite.
+        url (:obj:`str`): The url of the test suite.
+        timestamp (:obj:`str`): The time when the test suite execution started.
+        properties (:obj:`dict`): The test suite properties.
+
+    """
+
+    def __init__(self, name, test_cases=None, id=None, stdout=None, stderr=None, package=None, hostname=None,
+                 filename=None, log=None, url=None, timestamp=None, properties=None):
 
         self.name = name
         self.test_cases = test_cases or []
@@ -415,7 +432,12 @@ class TestSuite:
 
 
 class TestReporter:
-    """Generate a JUnit XML."""
+    """A test reporter class that can express test results in a Junit XML report.
+
+    Args:
+        test_suites (:obj:`list`): A list of :class:`~TestSuite`.
+
+    """
 
     def __init__(self, test_suites):
         self.test_suites = test_suites
@@ -428,15 +450,11 @@ class TestReporter:
             for key in ["disabled", "errors", "failures", "tests", "time"]:
                 attributes[key] += getattr(test_suit, key)
 
-            # for key in ["time"]:
-            #     attributes[key] += float(test_suit_xml.get(key, 0))
-
         return attributes
 
-    def xml(self, prettyprint=True, encoding=None):
-        """Generate the JUnit XML."""
+    def _xml(self):
+        """Generates the report XML."""
 
-        encoding = encoding or "utf-8"
         xml_element = ET.Element("testsuites")
 
         for test_suit in self.test_suites:
@@ -446,29 +464,39 @@ class TestReporter:
         for key, value in self.attributes.items():
             xml_element.set(key, str(value))
 
-        xml_string = ET.tostring(xml_element, encoding=encoding)
-        xml_string = xml_safe(xml_string.decode(encoding))
+        return xml_element
+
+    def to_string(self, prettyprint=True):
+        """Generates a string representation of the JUnit XML."""
+
+        xml_element = self._xml()
+        xml_string = ET.tostring(xml_element, encoding="unicode")
+        xml_string = xml_safe(xml_string)
 
         if prettyprint:
-            xml_string = xml_string.encode(encoding)
             xml_string = xml.dom.minidom.parseString(xml_string)
-            xml_string = xml_string.toprettyxml(encoding=encoding)
-            xml_string = xml_string.decode(encoding)
+            xml_string = xml_string.toprettyxml()
 
         return xml_string
 
-    def save(self, filename="report.xml", prettyprint=True, encoding=None):
-        xml_string = self.xml(prettyprint=prettyprint, encoding=encoding)
+    def write(self, filename="report.xml", prettyprint=True):
+        """Writes the JUnit report to a file, as XML."""
+
+        xml_string = self.to_string()
 
         with open(filename, "w") as fp:
             fp.write(xml_string)
 
     @classmethod
-    def xml_report(cls, test_suites, prettyprint=True, encoding=None):
+    def report_to_string(cls, test_suites, prettyprint=True):
+        """Generates a string representation of the JUnit XML."""
+
         junit_xml = cls(test_suites)
-        return junit_xml.xml(prettyprint=prettyprint, encoding=encoding)
+        return junit_xml.to_string(prettyprint=prettyprint)
 
     @classmethod
-    def save_xml_report(cls, test_suites, filename="report.xml", prettyprint=True, encoding=None):
+    def write_report(cls, test_suites, filename="report.xml", prettyprint=True):
+        """Generate the JUnit XML and writes the XML to the specified file."""
+
         junit_xml = cls(test_suites)
-        return junit_xml.save(filename=filename, prettyprint=prettyprint, encoding=encoding)
+        return junit_xml.write(filename=filename, prettyprint=prettyprint)
