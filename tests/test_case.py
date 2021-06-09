@@ -1,3 +1,5 @@
+import datetime
+
 import pytest
 
 from junit_reporter import TestCase
@@ -60,3 +62,38 @@ def test_is_skipped(skips, expected):
         test_case.add_skipped(**skip)
 
     assert test_case.is_skipped == expected
+
+
+def test_empty_attributes():
+    test_case = TestCase("Test Case #1")
+    expected = {
+        "name": "Test Case #1"
+    }
+
+    assert test_case.attributes == expected
+
+
+def test_attributes():
+    test_case = TestCase(
+        "Test Case #1",
+        status="Failed",
+        classname="TestModel",
+        filename="test.py",
+        line=24,
+        assertions=3,
+        elapsed_seconds=10,
+        timestamp=datetime.datetime(2020, 8, 24)
+    )
+
+    expected = {
+        "name": "Test Case #1",
+        "status": "Failed",
+        "classname": "TestModel",
+        "file": "test.py",
+        "line": "24",
+        "assertions": "3",
+        "time": "10",
+        "timestamp": "2020-08-24 00:00:00"
+    }
+
+    assert test_case.attributes == expected

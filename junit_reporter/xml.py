@@ -73,7 +73,7 @@ class TestCase:
         log (:obj:`str`): The log of the test case.
         url (:obj:`str`): The url of the test case.
         enabled (:obj:`bool`): If set to ``False`` mark the test case as disabled.
-        allow_multiple_subelements (:obj:`bool`): -.
+        allow_multiple_subelements (:obj:`bool`): If set to ``True`` will allow a test cases to have multiple errors, failures or skips.
 
     """
 
@@ -133,8 +133,9 @@ class TestCase:
 
     @property
     def attributes(self):
-        attributes = dict()
-        attributes["name"] = str(self.name)
+        attributes = {
+            "name": str(self.name)
+        }
 
         if self.assertions:
             attributes["assertions"] = str(self.assertions)
@@ -238,9 +239,9 @@ class TestCase:
         """Adds an error message, output, or both to the test case.
 
         Args:
-            message (:obj:`str`): -.
-            output (:obj:`str`): -.
-            error_type (:obj:`str`): -.
+            message (:obj:`str`): The error message.
+            output (:obj:`str`): The error output.
+            error_type (:obj:`str`): The error type.
 
         """
 
@@ -260,9 +261,9 @@ class TestCase:
         """Adds a failure message, output, or both to the test case.
 
         Args:
-            message (:obj:`str`): -.
-            output (:obj:`str`): -.
-            error_type (:obj:`str`): -.
+            message (:obj:`str`): The failure message.
+            output (:obj:`str`): The failure output.
+            failure_type (:obj:`str`): The failure type.
 
         """
 
@@ -282,9 +283,8 @@ class TestCase:
         """Adds a skipped message, output, or both to the test case.
 
         Args:
-            message (:obj:`str`): -.
-            output (:obj:`str`): -.
-            error_type (:obj:`str`): -.
+            message (:obj:`str`): The skip message.
+            output (:obj:`str`): The skip output.
 
         """
 
@@ -303,7 +303,7 @@ class TestCase:
 class TestSuite:
     """A class that contains information about the execution of a single test suite.
 
-    It also contains information about failures/errors related to the test suite.
+    It also contains information about failures/errors related to the test cases contained by the test suite.
 
     Args:
         test_cases (:obj:`list`): A list of :class:`~TestCase`.
