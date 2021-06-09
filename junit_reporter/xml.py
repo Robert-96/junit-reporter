@@ -73,7 +73,8 @@ class TestCase:
         log (:obj:`str`): The log of the test case.
         url (:obj:`str`): The url of the test case.
         enabled (:obj:`bool`): If set to ``False`` mark the test case as disabled.
-        allow_multiple_subelements (:obj:`bool`): If set to ``True`` will allow a test cases to have multiple errors, failures or skips.
+        allow_multiple_subelements (:obj:`bool`): If set to ``True`` will allow a test cases to have multiple errors,
+            failures or skips.
 
     """
 

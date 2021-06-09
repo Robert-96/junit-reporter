@@ -5,7 +5,10 @@ from junit_reporter.__version__ import VERSION
 
 NAME = 'junit-reporter'
 KEYWORDS = 'XML, JUnit'
-DESCRIPTION = 'A Python3 package that generates test results in the standard JUnit XML format for use with Jenkins and other build integration servers.'
+DESCRIPTION = (
+    'A Python3 package that generates test results in the standard JUnit XML format for use with Jenkins and other'
+    'build integration servers.'
+)
 
 URL = 'https://github.com/Robert-96/junit-reporter'
 EMAIL = 'dezmereanrobert@gmail.com'
@@ -70,7 +73,7 @@ setup(
         'Topic :: Text Processing',
         'Topic :: Text Processing :: Markup',
         'Topic :: Text Processing :: Markup :: XML',
-        'Topic :: Software Development :: Build Tools",
+        'Topic :: Software Development :: Build Tools',
         'Topic :: Software Development :: Testing',
         'Topic :: Software Development :: Testing :: Unit'
 
