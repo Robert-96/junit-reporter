@@ -12,7 +12,8 @@ Use the following command to install ``junit-reporter``:
 Living on the edge
 ==================
 
-If you want to work with the latest code before it’s released, install or update the code from the ``main`` branch:
+If you want to work with the latest code before it’s released, install or
+update the code from the ``main`` branch:
 
 .. code-block:: console
 

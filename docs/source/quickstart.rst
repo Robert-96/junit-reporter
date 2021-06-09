@@ -25,7 +25,7 @@ It produces the following output:
                 <system-out>I am stdout!</system-out>
                 <system-err>I am stderr!</system-err>
             </testcase>
-	    </testsuite>
+        </testsuite>
     </testsuites>
 
 If you want to write the Junit XML to file:

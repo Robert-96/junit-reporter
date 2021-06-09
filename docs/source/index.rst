@@ -9,7 +9,8 @@ JUnit XML format for use with Jenkins and other build integration servers.
 Documentation
 =============
 
-This part of the documentation guides you through all of the library’s usage patterns.
+This part of the documentation guides you through all of the library’s usage
+patterns.
 
 .. toctree::
    :maxdepth: 2
