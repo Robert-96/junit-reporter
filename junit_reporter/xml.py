@@ -1,8 +1,9 @@
-"""Generates test results in the standard JUnit XML format for use with Jenkins and other build integration servers."""
+"""Low level classes for generating test results in the standard JUnit XML format for use with Jenkins and other build integration servers."""
 
 import re
 import sys
 import logging
+import datetime
 import xml.dom.minidom
 import xml.etree.ElementTree as ET
 from collections import defaultdict
@@ -74,7 +75,7 @@ class TestCase:
         url (:obj:`str`): The url of the test case.
         enabled (:obj:`bool`): If set to ``False`` mark the test case as disabled.
         allow_multiple_subelements (:obj:`bool`): If set to ``True`` will allow a test cases to have multiple errors,
-            failures or skips.
+            failures or skips. Defaults to ``False``.
 
     """
 
@@ -236,6 +237,21 @@ class TestCase:
             stderr_element.text = str(self.stderr)
             element.append(stderr_element)
 
+    def start(self):
+        """Set the start timestamps."""
+
+        self.timestamp = datetime.datetime.now()
+
+    def finish(self):
+        """Set the elapsed seconds based on the timestamp."""
+
+        if not self.timestamp:
+            return
+
+        elapsed_seconds = datetime.datetime.now() - self.timestamp
+        elapsed_seconds = elapsed_seconds.total_seconds()
+        self.elapsed_seconds = elapsed_seconds
+
     def add_error(self, message=None, output=None, error_type=None):
         """Adds an error message, output, or both to the test case.
 
@@ -327,15 +343,20 @@ class TestSuite:
         self.name = name
         self.test_cases = test_cases or []
 
-        self.timestamp = timestamp
-        self.hostname = hostname
         self.id = id
+
+        self.stdout = stdout
+        self.stderr = stderr
+
+        self.timestamp = timestamp
+
         self.package = package
         self.filename = filename
         self.log = log
+
+        self.hostname = hostname
         self.url = url
-        self.stdout = stdout
-        self.stderr = stderr
+
         self.properties = properties
 
     @property
@@ -431,8 +452,28 @@ class TestSuite:
 
         return xml_element
 
+    def create_test_case(self, *args, **kwargs):
+        """Create a new test cases and add it to the test suite.
 
-class TestReporter:
+        Arguments and optional keyword arguments correspond to the :class:`~TestCase` constructor arguments, documented above.
+
+        Returns:
+            TestCase: The new test case.
+
+        """
+
+        test_case = TestCase(*args, **kwargs)
+        self.test_cases.append(test_case)
+
+        return test_case
+
+    def add_test_case(self, test_case):
+        """Add a test case to the test suite."""
+
+        self.test_cases.append(test_case)
+
+
+class JUnitReporter:
     """A test reporter class that can express test results in a Junit XML report.
 
     Args:
@@ -440,18 +481,8 @@ class TestReporter:
 
     """
 
-    def __init__(self, test_suites):
-        self.test_suites = test_suites
-
-    @property
-    def attributes(self):
-        attributes = defaultdict(int)
-
-        for test_suit in self.test_suites:
-            for key in ["disabled", "errors", "failures", "tests", "time"]:
-                attributes[key] += getattr(test_suit, key)
-
-        return attributes
+    def __init__(self, test_suites=None):
+        self.test_suites = test_suites or []
 
     def _xml(self):
         """Generates the report XML."""
@@ -466,6 +497,16 @@ class TestReporter:
             xml_element.set(key, str(value))
 
         return xml_element
+
+    @property
+    def attributes(self):
+        attributes = defaultdict(int)
+
+        for test_suit in self.test_suites:
+            for key in ["disabled", "errors", "failures", "tests", "time"]:
+                attributes[key] += getattr(test_suit, key)
+
+        return attributes
 
     def to_string(self, prettyprint=True):
         """Generates a string representation of the JUnit XML."""
@@ -501,3 +542,23 @@ class TestReporter:
 
         junit_xml = cls(test_suites)
         return junit_xml.write(filename=filename, prettyprint=prettyprint)
+
+    def create_test_suite(self, *args, **kwargs):
+        """Create a new test suite and add it to the report.
+
+        Arguments and optional keyword arguments correspond to the :class:`~TestSuite` constructor arguments, documented above.
+
+        Returns:
+            TestSuite: The new test suite.
+
+        """
+
+        test_suite = TestSuite(*args, **kwargs)
+        self.test_suites.append(test_suite)
+
+        return test_suite
+
+    def add_test_suite(self, test_suite):
+        """Add a test suite to the report."""
+
+        self.test_suites.append(test_suite)
