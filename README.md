@@ -15,12 +15,12 @@ $ pip install junit-reporter
 Create a test report:
 
 ```python
-from junit_reporter import TestCase, TestSuite, TestReporter
+from junit_reporter import TestCase, TestSuite, JUnitReporter
 
 test_case = TestCase('Test #1', classname='some.class.name', stdout='I am stdout!', stderr='I am stderr!')
 test_suite = TestSuite('Test Suite #1', [test_case])
 
-xml = TestReporter.report_to_string([test_suite])
+xml = JUnitReporter.report_to_string([test_suite])
 ```
 
 It produces the following output:

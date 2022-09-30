@@ -17,5 +17,5 @@ classes and functions.
     :members:
 
 
-.. autoclass:: TestReporter
+.. autoclass:: JUnitReporter
     :members:

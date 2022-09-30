@@ -6,12 +6,12 @@ Create a test report:
 
 .. code-block:: python
 
-    from junit_reporter import TestCase, TestSuite, TestReporter
+    from junit_reporter import TestCase, TestSuite, JUnitReporter
 
     test_case = TestCase('Test #1', classname='some.class.name', stdout='I am stdout!', stderr='I am stderr!')
     test_suite = TestSuite('Test Suite #1', [test_case])
 
-    xml = TestReporter.report_to_string([test_suite])
+    xml = JUnitReporter.report_to_string([test_suite])
 
 
 It produces the following output:
@@ -32,19 +32,19 @@ If you want to write the Junit XML to file:
 
 .. code-block:: python
 
-    from junit_reporter import TestCase, TestSuite, TestReporter
+    from junit_reporter import TestCase, TestSuite, JUnitReporter
 
     test_case = TestCase('Test #1', classname='some.class.name', stdout='I am stdout!', stderr='I am stderr!')
     test_suite = TestSuite('Test Suite #1', [test_case])
 
-    xml = TestReporter.write_report([test_suite], filename="report.xml")
+    xml = JUnitReporter.write_report([test_suite], filename="report.xml")
 
 This will write the report to ``report.xml``. By default ``prettyprint`` is set
 to ``True`` but can be disabled using the ``prettyprint`` keyword argument.
 
 .. code-block:: python
 
-    xml = TestReporter.write_report([test_suite], filename="report.xml", prettyprint=False)
+    xml = JUnitReporter.write_report([test_suite], filename="report.xml", prettyprint=False)
 
 
 .. note::
