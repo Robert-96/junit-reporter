@@ -1,1 +1,1 @@
-from .xml import TestCase, TestSuite, TestReporter
+from .xml import TestCase, TestSuite, JUnitReporter
