@@ -75,7 +75,7 @@ setup(
         'Topic :: Text Processing :: Markup :: XML',
         'Topic :: Software Development :: Build Tools',
         'Topic :: Software Development :: Testing',
-        'Topic :: Software Development :: Testing :: Unit'
+        'Topic :: Software Development :: Testing :: Unit',
 
         'Topic :: Utilities'
     ],
