@@ -323,6 +323,7 @@ class TestSuite:
     It also contains information about failures/errors related to the test cases contained by the test suite.
 
     Args:
+        name: The name of the tests case.
         test_cases (:obj:`list`): A list of :class:`~TestCase`.
         id (:obj:`str`): The id of the test suite.
         stdout (:obj:`str`): The data written to ``stdout`` during the test execution.
@@ -522,7 +523,13 @@ class JUnitReporter:
         return xml_string
 
     def write(self, filename="report.xml", prettyprint=True):
-        """Writes the JUnit report to a file, as XML."""
+        """Writes the JUnit report to a file, as XML.
+
+        Args:
+            filename:
+            prettyprint:
+
+        """
 
         xml_string = self.to_string()
 

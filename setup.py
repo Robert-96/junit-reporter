@@ -13,7 +13,7 @@ DESCRIPTION = (
 URL = 'https://github.com/Robert-96/junit-reporter'
 EMAIL = 'dezmereanrobert@gmail.com'
 AUTHOR = 'Robert-96'
-REQUIRES_PYTHON = '>=3.4.0'
+REQUIRES_PYTHON = '>=3.5.0'
 LICENSE = 'GNU GPLv3'
 
 PROJECT_URLS = {

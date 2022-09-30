@@ -2,6 +2,8 @@
 
 A Python3 package that generates test results in the standard JUnit XML format for use with Jenkins and other build integration servers.
 
+Documentation: https://junit-reporter.readthedocs.io/
+
 ## Installation
 
 Use the following command to install ``junit-reporter``:
@@ -10,17 +12,49 @@ Use the following command to install ``junit-reporter``:
 $ pip install junit-reporter
 ```
 
+### Living on the edge
+
+If you want to work with the latest code before it’s released, install or
+update the code from the `main` branch:
+
+```
+$ pip install -U https://github.com/Robert-96/junit-reporter
+```
+
 ## Quickstart
 
-Create a test report:
+### Using the decorators
+
+Create a JUnit report for a `unittest` project:
 
 ```python
-from junit_reporter import TestCase, TestSuite, TestReporter
+import unittest
+
+from junit_reporter import report
+
+
+class TestFoo(unittest.TestCase):
+    pass
+
+```
+
+### Using classes
+
+Create a JUnit report:
+
+```python
+from junit_reporter import TestCase, TestSuite, JUnitReporter
 
 test_case = TestCase('Test #1', classname='some.class.name', stdout='I am stdout!', stderr='I am stderr!')
 test_suite = TestSuite('Test Suite #1', [test_case])
 
-xml = TestReporter.report_to_string([test_suite])
+reporter = JUnitReporter([test_suite])
+
+# Generate a string containing the XML report
+xml = reporter.to_string(prettyprint=True)
+
+# Write the XML report in a file
+reporter.write(filename="report.xml", prettyprint=True)
 ```
 
 It produces the following output:
@@ -28,19 +62,30 @@ It produces the following output:
 ```xml
 <?xml version="1.0" ?>
 <testsuites disabled="0" errors="0" failures="0" tests="1" time="0">
-    <testsuite name="Test Suite #1" tests="1" assertions="0" disabled="0" errors="0" failures="0" skipped="0" time="0">
-        <testcase name="Test #1" classname="some.class.name">
-            <system-out>I am stdout!</system-out>
-            <system-err>I am stderr!</system-err>
-        </testcase>
-    </testsuite>
+	<testsuite name="Test Suite #1" tests="1" assertions="0" disabled="0" errors="0" failures="0" skipped="0" time="0">
+		<testcase name="Test #1" classname="some.class.name">
+			<system-out>I am stdout!</system-out>
+			<system-err>I am stderr!</system-err>
+		</testcase>
+	</testsuite>
 </testsuites>
 ```
 
-## Running the tests
+Check out the [API documentation](https://junit-reporter.readthedocs.io/en/latest/api.html) for more details.
+
+## Development
+
+### Running the tests
 
 ```
 $ pytest tests
+```
+
+### Building the documentation
+
+```
+$ cd docs
+$ make docs
 ```
 
 ## License
