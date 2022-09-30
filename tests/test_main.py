@@ -1,7 +1,7 @@
 import random
 from datetime import datetime
 
-from junit_reporter import TestCase, TestSuite, TestReporter
+from junit_reporter import TestCase, TestSuite, JUnitReporter
 
 
 def generate_test_case(index):
@@ -49,13 +49,13 @@ def generate_test_suites():
 def test_happy_flow(tmpdir):
     test_case = TestCase("Test Case #1", elapsed_seconds=10)
     test_suite = TestSuite("Test Suite #1", test_cases=[test_case])
-    junit_xml = TestReporter([test_suite])
+    junit_xml = JUnitReporter([test_suite])
 
     assert junit_xml.to_string() != ""
 
 
 def test_xml(tmpdir):
-    junit_xml = TestReporter(generate_test_suites())
+    junit_xml = JUnitReporter(generate_test_suites())
 
     junit_xml.write()
     assert junit_xml.to_string() != ""
