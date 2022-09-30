@@ -1,4 +1,6 @@
-"""Low level classes for generating test results in the standard JUnit XML format for use with Jenkins and other build integration servers."""
+"""Low level classes for generating test results in the standard JUnit XML format for use with Jenkins and other build
+integration servers.
+"""
 
 import re
 import sys
@@ -455,7 +457,8 @@ class TestSuite:
     def create_test_case(self, *args, **kwargs):
         """Create a new test cases and add it to the test suite.
 
-        Arguments and optional keyword arguments correspond to the :class:`~TestCase` constructor arguments, documented above.
+        Arguments and optional keyword arguments correspond to the :class:`~TestCase` constructor arguments, documented
+        above.
 
         Returns:
             TestCase: The new test case.
@@ -546,7 +549,8 @@ class JUnitReporter:
     def create_test_suite(self, *args, **kwargs):
         """Create a new test suite and add it to the report.
 
-        Arguments and optional keyword arguments correspond to the :class:`~TestSuite` constructor arguments, documented above.
+        Arguments and optional keyword arguments correspond to the :class:`~TestSuite` constructor arguments,
+        documented above.
 
         Returns:
             TestSuite: The new test suite.
