@@ -11,30 +11,31 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../..'))
+
+sys.path.insert(0, os.path.abspath("../.."))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'junit-reporter'
-copyright = '2021, Robert-96'
-author = 'Robert-96'
+project = "junit-reporter"
+copyright = "2021, Robert-96"
+author = "Robert-96"
 
 
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
+# extensions coming with Sphinx (named "sphinx.ext.*") or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.napoleon',
-    'sphinx_rtd_theme',
-    'recommonmark'
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
+    "sphinx_rtd_theme",
+    "recommonmark"
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -46,24 +47,24 @@ exclude_patterns = []
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'sphinx_rtd_theme'
+html_theme = "sphinx_rtd_theme"
 html_theme_options = {
-    'style_nav_header_background': '#6AB04C',
+    "style_nav_header_background": "#6AB04C",
 }
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 # If given, this must be the name of an image file (path relative to the configuration
 # directory) that is the favicon of the docs. Modern browsers use this as the icon for
 # tabs, windows and bookmarks. It should be a Windows-style icon file (.ico), which is
 # 16x16 or 32x32 pixels large.
-html_favicon = '_static/icons/favicon.svg'
+html_favicon = "_static/icons/favicon.svg"
 
 # If given, this must be the name of an image file (path relative to the configuration
 # directory) that is the logo of the docs. It is placed at the top of the sidebar;
 # its width should therefore not exceed 200 pixels.
-html_logo = '_static/icons/logo.svg'
+html_logo = "_static/icons/logo.svg"
