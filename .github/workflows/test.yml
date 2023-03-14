@@ -3,9 +3,20 @@ name: Tests
 on: [push]
 
 jobs:
-  tests:
-
+  lint:
     runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Lint Code Base
+      uses: github/super-linter@v4
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  tests:
+    runs-on: ubuntu-latest
+
     strategy:
       matrix:
         python-version: ['3.5', '3.6', '3.7', '3.8', '3.9', '3.10']
@@ -23,12 +34,15 @@ jobs:
         python -m pip install --upgrade pip setuptools wheel
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
+
     - name: Lint with flake8
       run: |
        flake8 .
+
     - name: Lint with doc8
       run: |
         doc8 docs
+
     - name: Test with pytest
       run: |
         pytest tests
