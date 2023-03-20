@@ -1,4 +1,4 @@
-from junit_reporter import TestCase, TestSuite, JUnitReporter
+from junit_reporter import JUnitReporter, TestCase, TestSuite
 
 test_case = TestCase("Test #1", classname="some.class.name", stdout="I am stdout!", stderr="I am stderr!")
 test_suite = TestSuite("Test Suite #1", [test_case])

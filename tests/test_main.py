@@ -1,7 +1,7 @@
 import random
 from datetime import datetime
 
-from junit_reporter import TestCase, TestSuite, JUnitReporter
+from junit_reporter import JUnitReporter, TestCase, TestSuite
 
 
 def generate_test_case(index):

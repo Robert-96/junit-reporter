@@ -1,8 +1,7 @@
 import unittest
 
 from junit_reporter import JUnitReporter
-from junit_reporter.decorators import junit_reporter, test_suite, test_case
-
+from junit_reporter.decorators import junit_reporter, test_case, test_suite
 
 reporter = JUnitReporter("report.xml")
 

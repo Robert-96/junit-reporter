@@ -2,14 +2,13 @@
 integration servers.
 """
 
-import re
-import sys
 import logging
 import datetime
+import re
+import sys
 import xml.dom.minidom
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-
 
 logger = logging.getLogger(__name__)
 

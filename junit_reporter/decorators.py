@@ -7,8 +7,7 @@ import atexit
 import logging
 import functools
 
-from .xml import TestCase, TestSuite, JUnitReporter
-
+from .xml import JUnitReporter, TestCase, TestSuite
 
 logger = logging.getLogger(__name__)
 

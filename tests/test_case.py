@@ -1,7 +1,6 @@
 import datetime
 
 import pytest
-
 from junit_reporter import TestCase
 
 

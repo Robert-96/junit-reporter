@@ -1,6 +1,6 @@
 import unittest
 
-from junit_reporter import junit_reporter, test_suite, test_case
+from junit_reporter import junit_reporter, test_case, test_suite
 
 
 @junit_reporter(filename="report.xml", prettyprint=True)
