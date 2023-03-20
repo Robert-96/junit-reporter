@@ -1,10 +1,10 @@
 import unittest
 
 from junit_reporter import JUnitReporter
-from junit_reporter.decorator import junit_reporter, test_suite, test_case
+from junit_reporter.decorators import junit_reporter, test_suite, test_case
 
 
-reporter = JUnitReporter("report.xml", prettyprint=True)
+reporter = JUnitReporter("report.xml")
 
 
 @test_suite(reporter=reporter)
