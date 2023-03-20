@@ -2,14 +2,14 @@
 
 A Python3 package that generates test results in the standard JUnit XML format for use with Jenkins and other build integration servers.
 
-Documentation: https://junit-reporter.readthedocs.io/
+Documentation: <https://junit-reporter.readthedocs.io/>
 
 ## Installation
 
 Use the following command to install ``junit-reporter``:
 
-```
-$ pip install junit-reporter
+```console
+pip install junit-reporter
 ```
 
 ### Living on the edge
@@ -17,8 +17,8 @@ $ pip install junit-reporter
 If you want to work with the latest code before it’s released, install or
 update the code from the `main` branch:
 
-```
-$ pip install -U https://github.com/Robert-96/junit-reporter
+```console
+pip install -U https://github.com/Robert-96/junit-reporter
 ```
 
 ## Quickstart
@@ -62,12 +62,12 @@ It produces the following output:
 ```xml
 <?xml version="1.0" ?>
 <testsuites disabled="0" errors="0" failures="0" tests="1" time="0">
-	<testsuite name="Test Suite #1" tests="1" assertions="0" disabled="0" errors="0" failures="0" skipped="0" time="0">
-		<testcase name="Test #1" classname="some.class.name">
-			<system-out>I am stdout!</system-out>
-			<system-err>I am stderr!</system-err>
-		</testcase>
-	</testsuite>
+    <testsuite name="Test Suite #1" tests="1" assertions="0" disabled="0" errors="0" failures="0" skipped="0" time="0">
+        <testcase name="Test #1" classname="some.class.name">
+            <system-out>I am stdout!</system-out>
+            <system-err>I am stderr!</system-err>
+        </testcase>
+    </testsuite>
 </testsuites>
 ```
 
@@ -77,15 +77,15 @@ Check out the [API documentation](https://junit-reporter.readthedocs.io/en/lates
 
 ### Running the tests
 
-```
-$ pytest tests
+```console
+pytest tests
 ```
 
 ### Building the documentation
 
-```
-$ cd docs
-$ make docs
+```console
+cd docs
+make docs
 ```
 
 ## License
