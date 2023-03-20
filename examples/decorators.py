@@ -6,7 +6,6 @@ from junit_reporter import junit_reporter, test_suite, test_case
 @junit_reporter(filename="report.xml", prettyprint=True)
 @test_suite(name="TestStringMethods", reporter="report.xml")
 class TestStringMethods(unittest.TestCase):
-
     @test_case(test_suite="TestStringMethods")
     def test_upper(self):
         self.assertEqual("foo".upper(), "FOO")
@@ -27,7 +26,6 @@ class TestStringMethods(unittest.TestCase):
 
 @test_suite(reporter="report.xml")
 class MyTestCase(unittest.TestCase):
-
     @test_case(test_suite="MyTestCase")
     def test_nothing(self):
         pass
