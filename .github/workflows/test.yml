@@ -13,8 +13,8 @@ jobs:
       uses: github/super-linter@v4
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PYTHON_BLACK: false
-        PYTHON_MYPY: false
+        VALIDATE_PYTHON_BLACK: false
+        VALIDATE_PYTHON_MYPY: false
 
   lint-docs:
     runs-on: ubuntu-latest
