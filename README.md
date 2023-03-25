@@ -1,6 +1,6 @@
 # junit-reporter
 
-A Python3 package that generates test results in the standard JUnit XML format for use with Jenkins and other build integration servers.
+This is a Python 3 package that creates test results using the standard JUnit XML format, which can be utilized with Jenkins and other build integration servers.
 
 Documentation: <https://junit-reporter.readthedocs.io/>
 
