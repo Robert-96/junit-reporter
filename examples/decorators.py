@@ -3,7 +3,7 @@ import unittest
 from junit_reporter import junit_reporter, test_case, test_suite
 
 
-@junit_reporter(filename="report.xml", prettyprint=True)
+# @junit_reporter(filename="report.xml", prettyprint=True)
 @test_suite(name="TestStringMethods", reporter="report.xml")
 class TestStringMethods(unittest.TestCase):
     @test_case(test_suite="TestStringMethods")
@@ -24,17 +24,17 @@ class TestStringMethods(unittest.TestCase):
             s.split(2)
 
 
-@test_suite(reporter="report.xml")
-class MyTestCase(unittest.TestCase):
-    @test_case(test_suite="MyTestCase")
+# @test_suite(reporter="report.xml")
+class TestExample(unittest.TestCase):
+    @test_case(test_suite="TestExample")
     def test_nothing(self):
-        pass
+        self.assertTrue(True)
 
-    @test_case(test_suite="MyTestCase")
+    @test_case(test_suite="TestExample")
     def test_format(self):
         pass
 
-    @test_case(test_suite="MyTestCase")
+    @test_case(test_suite="TestExample")
     def test_maybe_skipped(self):
         pass
 

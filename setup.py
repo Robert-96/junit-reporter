@@ -1,7 +1,5 @@
-from setuptools import setup, find_packages
-
 from junit_reporter.__version__ import VERSION
-
+from setuptools import setup, find_packages
 
 NAME = "junit-reporter"
 KEYWORDS = "XML, JUnit"

@@ -1,9 +1,10 @@
-"""Low level classes for generating test results in the standard JUnit XML format for use with Jenkins and other build
-integration servers.
+"""This module includes low-level classes that can be used to create test results in the standard JUnit XML format,
+making it compatible with Jenkins and other build integration servers.
+
 """
 
-import logging
 import datetime
+import logging
 import re
 import sys
 import xml.dom.minidom
@@ -58,7 +59,7 @@ def xml_safe(value):
 
 
 class TestCase:
-    """A class that contains information about the execution of a single test case.
+    """This class is designed to store and manage information related to the execution of a single test case.
 
     Args:
         name (:obj:`str`): The display name of the test case.
@@ -319,9 +320,8 @@ class TestCase:
 
 
 class TestSuite:
-    """A class that contains information about the execution of a single test suite.
-
-    It also contains information about failures/errors related to the test cases contained by the test suite.
+    """This class is responsible for managing information related to the execution of a single test suite, including
+    any failures or errors associated with the test cases within the suite.
 
     Args:
         name: The name of the tests case.
@@ -477,7 +477,7 @@ class TestSuite:
 
 
 class JUnitReporter:
-    """A test reporter class that can express test results in a Junit XML report.
+    """This class is a test reporter that can produce JUnit XML reports to express test results.
 
     Args:
         test_suites (:obj:`list`): A list of :class:`~TestSuite`.

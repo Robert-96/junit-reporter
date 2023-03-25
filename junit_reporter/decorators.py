@@ -1,5 +1,4 @@
-"""High level decorators for generating test results in the standard JUnit XML format for use with Jenkins and other
-build integration servers.
+"""This module provides high-level decorators to generate test results in the standard JUnit XML format.
 
 """
 
@@ -53,12 +52,11 @@ def test_case(*args, test_suite=None, **kwargs):
 
     """
 
-    test_suite = TestSuiteFactory.get(test_suite)
-
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            test_case = test_suite.create_test_case(func.__name__)
+            suite = TestSuiteFactory.get(test_suite)
+            test_case = suite.create_test_case(func.__name__)
             test_case.start()
 
             try:
@@ -89,17 +87,16 @@ def test_suite(name=None, reporter=None, **kwargs):
 
     """
 
-    reporter = ReporterFactory.get(reporter)
-
     def decorator(func):
         test_suite_name = name or func.__name__
         test_suite = TestSuiteFactory.get(test_suite_name, **kwargs)
-        reporter.add_test_suite(test_suite)
+        reporter2 = ReporterFactory.get(reporter)
+        reporter2.add_test_suite(test_suite)
 
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            value = func(*args, **kwargs)
-            return value
+            result = func(*args, **kwargs)
+            return result
         return wrapper
     return decorator
 
