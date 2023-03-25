@@ -3,10 +3,10 @@
 """
 
 import atexit
-import logging
 import functools
+import logging
 
-from .xml import JUnitReporter, TestCase, TestSuite
+from .xml import JUnitReporter, TestSuite
 
 logger = logging.getLogger(__name__)
 
