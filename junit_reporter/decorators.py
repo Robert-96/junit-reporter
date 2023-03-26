@@ -16,6 +16,8 @@ class ReporterFactory:
 
     @classmethod
     def get(cls, filename=None, prettyprint=True):
+        """Returns a JUnitReporter instance for the given filename."""
+
         if not filename:
             filename = "report.xml"
 
@@ -34,11 +36,16 @@ class TestSuiteFactory:
     test_suites = {}
 
     @classmethod
-    def get(cls, name, **kwargs):
+    def get(cls, name, reporter=None, **kwargs):
+        """Returns a TestSuite instance for the given name."""
+
+        reporter = ReporterFactory.get(filename=reporter)
         test_suite = cls.test_suites.get(name, None)
 
         if not test_suite:
             test_suite = TestSuite(name, **kwargs)
+            reporter.add_test_suite(test_suite)
+
             cls.test_suites[name] = test_suite
 
         return test_suite
@@ -62,15 +69,13 @@ def test_case(*args, test_suite=None, **kwargs):
             try:
                 result = func(*args, **kwargs)
             except AssertionError as error:
-                test_case.finish()
                 test_case.add_failure(message=str(error), error_type=error.__class__.__name__)
                 raise
             except Exception as error:
-                test_case.finish()
                 test_case.add_error(message=str(error), error_type=error.__class__.__name__)
                 raise
-
-            test_case.finish()
+            finally:
+                test_case.finish()
 
             return result
         return wrapper
@@ -90,8 +95,8 @@ def test_suite(name=None, reporter=None, **kwargs):
     def decorator(func):
         test_suite_name = name or func.__name__
         test_suite = TestSuiteFactory.get(test_suite_name, **kwargs)
-        reporter2 = ReporterFactory.get(reporter)
-        reporter2.add_test_suite(test_suite)
+        reporter_instance = ReporterFactory.get(reporter)
+        reporter_instance.add_test_suite(test_suite)
 
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
