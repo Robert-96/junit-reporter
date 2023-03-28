@@ -94,9 +94,7 @@ def test_suite(name=None, reporter=None, **kwargs):
 
     def decorator(func):
         test_suite_name = name or func.__name__
-        test_suite = TestSuiteFactory.get(test_suite_name, **kwargs)
-        reporter_instance = ReporterFactory.get(reporter)
-        reporter_instance.add_test_suite(test_suite)
+        test_suite = TestSuiteFactory.get(test_suite_name, reporter=reporter, **kwargs)
 
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
