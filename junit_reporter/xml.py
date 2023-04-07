@@ -492,9 +492,9 @@ class JUnitReporter:
 
         xml_element = ET.Element("testsuites")
 
-        for test_suit in self.test_suites:
-            test_suit_xml = test_suit._xml()
-            xml_element.append(test_suit_xml)
+        for test_suite in self.test_suites:
+            test_suite_xml = test_suite._xml()
+            xml_element.append(test_suite_xml)
 
         for key, value in self.attributes.items():
             xml_element.set(key, str(value))
@@ -505,9 +505,9 @@ class JUnitReporter:
     def attributes(self):
         attributes = defaultdict(int)
 
-        for test_suit in self.test_suites:
+        for test_suite in self.test_suites:
             for key in ["disabled", "errors", "failures", "tests", "time"]:
-                attributes[key] += getattr(test_suit, key)
+                attributes[key] += getattr(test_suite, key)
 
         return attributes
 
