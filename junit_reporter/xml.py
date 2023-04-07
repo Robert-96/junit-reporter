@@ -480,15 +480,23 @@ class JUnitReporter:
     """This class is a test reporter that can produce JUnit XML reports to express test results.
 
     Args:
-        test_suites (:obj:`list`): A list of :class:`~TestSuite`.
+        test_suites (:obj:`list` of :class:`~TestSuite`, optional): A list of test suites to include in the report.
 
     """
 
     def __init__(self, test_suites=None):
         self.test_suites = test_suites or []
 
+    def __repr__(self):
+        return f"{self.__class__.__name__}(test_suites={self.test_suites!r})"
+
     def _xml(self):
-        """Generates the report XML."""
+        """Generate the JUnit XML report.
+
+        Returns:
+            :class:`~xml.etree.ElementTree.Element`: The root element of the JUnit XML report.
+
+        """
 
         xml_element = ET.Element("testsuites")
 
@@ -503,6 +511,13 @@ class JUnitReporter:
 
     @property
     def attributes(self):
+        """Compute the summary attributes of the JUnit report.
+
+        Returns:
+            :obj:`defaultdict` of :obj:`int`: A dictionary of summary attributes of the JUnit report.
+
+        """
+
         attributes = defaultdict(int)
 
         for test_suite in self.test_suites:
@@ -512,7 +527,15 @@ class JUnitReporter:
         return attributes
 
     def to_string(self, prettyprint=True):
-        """Generates a string representation of the JUnit XML."""
+        """Generate a string representation of the JUnit report.
+
+        Args:
+            prettyprint (:obj:`bool`, optional): Whether to pretty-print the XML output. Defaults to True.
+
+        Returns:
+            :obj:`str`: The string representation of the JUnit report.
+
+        """
 
         xml_element = self._xml()
         xml_string = ET.tostring(xml_element, encoding="unicode")
@@ -525,11 +548,11 @@ class JUnitReporter:
         return xml_string
 
     def write(self, filename="report.xml", prettyprint=True):
-        """Writes the JUnit report to a file, as XML.
+        """Write the JUnit report to a file in XML format.
 
         Args:
-            filename:
-            prettyprint:
+            filename (:obj:`str`, optional): The name of the output file. Defaults to 'report.xml'.
+            prettyprint (:obj:`bool`, optional): Whether to pretty-print the XML output. Defaults to True.
 
         """
 
@@ -538,25 +561,31 @@ class JUnitReporter:
         with open(filename, "w") as fp:
             fp.write(xml_string)
 
-    @classmethod
-    def report_to_string(cls, test_suites, prettyprint=True):
-        """Generates a string representation of the JUnit XML."""
+    def add_test_suite(self, test_suite):
+        """Add a test suite to the report.
 
-        junit_xml = cls(test_suites)
-        return junit_xml.to_string(prettyprint=prettyprint)
+        Args:
+            test_suite (TestSuite): The test suite to add to the report.
 
-    @classmethod
-    def write_report(cls, test_suites, filename="report.xml", prettyprint=True):
-        """Generate the JUnit XML and writes the XML to the specified file."""
+        """
 
-        junit_xml = cls(test_suites)
-        return junit_xml.write(filename=filename, prettyprint=prettyprint)
+        self.test_suites.append(test_suite)
 
     def create_test_suite(self, *args, **kwargs):
         """Create a new test suite and add it to the report.
 
         Arguments and optional keyword arguments correspond to the :class:`~TestSuite` constructor arguments,
         documented above.
+
+        Args:
+            name (str, optional): The name of the test suite. Defaults to None.
+            tests (int, optional): The total number of tests in the suite. Defaults to None.
+            failures (int, optional): The total number of failed tests in the suite. Defaults to None.
+            errors (int, optional): The total number of tests with errors in the suite. Defaults to None.
+            time (float, optional): The total time taken to run the tests in the suite. Defaults to None.
+            timestamp (str, optional): The timestamp when the tests were run. Defaults to None.
+            hostname (str, optional): The hostname of the machine where the tests were run. Defaults to None.
+            id (str, optional): The ID of the test suite. Defaults to None.
 
         Returns:
             TestSuite: The new test suite.
@@ -568,7 +597,32 @@ class JUnitReporter:
 
         return test_suite
 
-    def add_test_suite(self, test_suite):
-        """Add a test suite to the report."""
+    @classmethod
+    def report_to_string(cls, test_suites, prettyprint=True):
+        """Generate a string representation of the JUnit report.
 
-        self.test_suites.append(test_suite)
+        Args:
+            test_suites (:obj:`list` of :class:`~TestSuite`): A list of test suites to include in the report.
+            prettyprint (:obj:`bool`, optional): Whether to pretty-print the XML output. Defaults to True.
+
+        Returns:
+            :obj:`str`: The string representation of the JUnit report.
+
+        """
+
+        junit_xml = cls(test_suites)
+        return junit_xml.to_string(prettyprint=prettyprint)
+
+    @classmethod
+    def write_report(cls, test_suites, filename="report.xml", prettyprint=True):
+        """Generate the JUnit report and write it to a file in XML format.
+
+        Args:
+            test_suites (:obj:`list` of :class:`~TestSuite`): A list of test suites to include in the report.
+            filename (:obj:`str`, optional): The name of the output file. Defaults to 'report.xml'.
+            prettyprint (:obj:`bool`, optional): Whether to pretty-print the XML output. Defaults to True.
+
+        """
+
+        junit_xml = cls(test_suites)
+        return junit_xml.write(filename=filename, prettyprint=prettyprint)
