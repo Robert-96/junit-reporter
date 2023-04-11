@@ -3,7 +3,7 @@ import unittest
 from junit_reporter import junit_reporter, test_case, test_suite
 
 
-# @junit_reporter(filename="report.xml", prettyprint=True)
+@junit_reporter(filename="report.xml", prettyprint=True)
 @test_suite(name="TestStringMethods", reporter="report.xml")
 class TestStringMethods(unittest.TestCase):
     @test_case(test_suite="TestStringMethods")

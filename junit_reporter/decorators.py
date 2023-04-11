@@ -1,6 +1,4 @@
-"""This module provides high-level decorators to generate test results in the standard JUnit XML format.
-
-"""
+"""This module provides high-level decorators to generate test results in the standard JUnit XML format."""
 
 import atexit
 import functools
@@ -24,6 +22,8 @@ class ReporterFactory:
         reporter = cls.reporters.get(filename, None)
 
         if not reporter:
+            logger.debug("Create a new JUnitReporter.")
+
             reporter = JUnitReporter()
             cls.reporters[filename] = reporter
 
@@ -82,7 +82,7 @@ def test_case(*args, test_suite=None, **kwargs):
     return decorator
 
 
-def test_suite(name=None, reporter=None, **kwargs):
+def test_suite(_func=None, *, name=None, reporter=None, **kwargs):
     """Create a new test suite.
 
     Args:
@@ -94,17 +94,17 @@ def test_suite(name=None, reporter=None, **kwargs):
 
     def decorator(func):
         test_suite_name = name or func.__name__
-        test_suite = TestSuiteFactory.get(test_suite_name, reporter=reporter, **kwargs)
+        TestSuiteFactory.get(test_suite_name, reporter=reporter, **kwargs)
 
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            result = func(*args, **kwargs)
-            return result
-        return wrapper
-    return decorator
+        return func
+
+    if _func is None:
+        return decorator
+    else:
+        return decorator(_func)
 
 
-def junit_reporter(filename, prettyprint=True):
+def junit_reporter(_func=None, *, filename=None, prettyprint=True):
     """Create a JunitReporter instance.
 
     Args:
@@ -114,12 +114,12 @@ def junit_reporter(filename, prettyprint=True):
 
     """
 
-    reporter = ReporterFactory.get(filename, prettyprint=prettyprint)
+    ReporterFactory.get(filename, prettyprint=prettyprint)
 
     def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            result = func(*args, **kwargs)
-            return result
-        return wrapper
-    return decorator
+        return func
+
+    if _func is None:
+        return decorator
+    else:
+        return decorator(_func)
