@@ -1,6 +1,11 @@
 import pytest
-from junit_reporter.decorators import ReporterFactory, TestSuiteFactory, \
-    junit_reporter, junit_test_case, junit_test_suite
+from junit_reporter.decorators import (
+    ReporterFactory,
+    TestSuiteFactory,
+    junit_reporter,
+    junit_test_case,
+    junit_test_suite,
+)
 
 
 @pytest.fixture
