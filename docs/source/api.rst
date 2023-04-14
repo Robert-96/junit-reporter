@@ -9,11 +9,11 @@ classes and functions.
 .. module:: junit_reporter
 
 
-.. autoclass:: TestCase
+.. autoclass:: JUnitTestCase
     :members:
 
 
-.. autoclass:: TestSuite
+.. autoclass:: JUnitTestSuite
     :members:
 
 
