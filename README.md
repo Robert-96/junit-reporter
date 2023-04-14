@@ -73,15 +73,30 @@ It produces the following output:
 
 Check out the [API documentation](https://junit-reporter.readthedocs.io/en/latest/api.html) for more details.
 
-## Development
+## Development Setup
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Setup
+
+```console
+git clone https://github.com/Robert-96/readme-template
+cd junit-reporter
+python3 -m pip install -r requirements.txt
+python3 -m pip install -r requirements-dev.txt
+```
 
 ### Running the tests
+
+To run tests, run the following command:
 
 ```console
 pytest tests
 ```
 
 ### Building the documentation
+
+To build the documentation, run the following command:
 
 ```console
 cd docs
