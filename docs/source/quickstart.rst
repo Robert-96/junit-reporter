@@ -6,10 +6,10 @@ Create a test report:
 
 .. code-block:: python
 
-    from junit_reporter import TestCase, TestSuite, JUnitReporter
+    from junit_reporter import JUnitTestCase, JUnitTestSuite, JUnitReporter
 
-    test_case = TestCase('Test #1', classname='some.class.name', stdout='I am stdout!', stderr='I am stderr!')
-    test_suite = TestSuite('Test Suite #1', [test_case])
+    test_case = JUnitTestCase('Test #1', classname='some.class.name', stdout='I am stdout!', stderr='I am stderr!')
+    test_suite = JUnitTestSuite('Test Suite #1', [test_case])
 
     xml = JUnitReporter.report_to_string([test_suite])
 
@@ -32,10 +32,10 @@ If you want to write the Junit XML to file:
 
 .. code-block:: python
 
-    from junit_reporter import TestCase, TestSuite, JUnitReporter
+    from junit_reporter import JUnitTestCase, JUnitTestSuite, JUnitReporter
 
-    test_case = TestCase('Test #1', classname='some.class.name', stdout='I am stdout!', stderr='I am stderr!')
-    test_suite = TestSuite('Test Suite #1', [test_case])
+    test_case = JUnitTestCase('Test #1', classname='some.class.name', stdout='I am stdout!', stderr='I am stderr!')
+    test_suite = JUnitTestSuite('Test Suite #1', [test_case])
 
     xml = JUnitReporter.write_report([test_suite], filename="report.xml")
 

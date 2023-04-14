@@ -58,7 +58,7 @@ def xml_safe(value):
     return illegal_regex.sub("?", value)
 
 
-class TestCase:
+class JUnitTestCase:
     """This class is designed to store and manage information related to the execution of a single test case.
 
     Args:
@@ -319,13 +319,13 @@ class TestCase:
             self.skipped = [skipped]
 
 
-class TestSuite:
+class JUnitTestSuite:
     """This class is responsible for managing information related to the execution of a single test suite, including
     any failures or errors associated with the test cases within the suite.
 
     Args:
         name: The name of the tests case.
-        test_cases (:obj:`list`): A list of :class:`~TestCase`.
+        test_cases (:obj:`list`): A list of :class:`~JUnitTestCase`.
         id (:obj:`str`): The id of the test suite.
         stdout (:obj:`str`): The data written to ``stdout`` during the test execution.
         stderr (:obj:`str`): The data written to ``stderr`` during the test execution.
@@ -457,15 +457,15 @@ class TestSuite:
     def create_test_case(self, *args, **kwargs):
         """Create a new test cases and add it to the test suite.
 
-        Arguments and optional keyword arguments correspond to the :class:`~TestCase` constructor arguments, documented
-        above.
+        Arguments and optional keyword arguments correspond to the :class:`~JUnitTestCase` constructor arguments,
+        documented above.
 
         Returns:
-            TestCase: The new test case.
+            JUnitTestCase: The new test case.
 
         """
 
-        test_case = TestCase(*args, **kwargs)
+        test_case = JUnitTestCase(*args, **kwargs)
         self.test_cases.append(test_case)
 
         return test_case
@@ -480,7 +480,7 @@ class JUnitReporter:
     """This class is a test reporter that can produce JUnit XML reports to express test results.
 
     Args:
-        test_suites (:obj:`list` of :class:`~TestSuite`, optional): A list of test suites to include in the report.
+        test_suites (:obj:`list` of :class:`~JUnitTestSuite`, optional): A list of test suites to include in the report.
 
     """
 
@@ -565,7 +565,7 @@ class JUnitReporter:
         """Add a test suite to the report.
 
         Args:
-            test_suite (TestSuite): The test suite to add to the report.
+            test_suite (JUnitTestSuite): The test suite to add to the report.
 
         """
 
@@ -574,7 +574,7 @@ class JUnitReporter:
     def create_test_suite(self, *args, **kwargs):
         """Create a new test suite and add it to the report.
 
-        Arguments and optional keyword arguments correspond to the :class:`~TestSuite` constructor arguments,
+        Arguments and optional keyword arguments correspond to the :class:`~JUnitTestSuite` constructor arguments,
         documented above.
 
         Args:
@@ -588,11 +588,11 @@ class JUnitReporter:
             id (str, optional): The ID of the test suite. Defaults to None.
 
         Returns:
-            TestSuite: The new test suite.
+            JUnitTestSuite: The new test suite.
 
         """
 
-        test_suite = TestSuite(*args, **kwargs)
+        test_suite = JUnitTestSuite(*args, **kwargs)
         self.test_suites.append(test_suite)
 
         return test_suite
@@ -602,7 +602,7 @@ class JUnitReporter:
         """Generate a string representation of the JUnit report.
 
         Args:
-            test_suites (:obj:`list` of :class:`~TestSuite`): A list of test suites to include in the report.
+            test_suites (:obj:`list` of :class:`~JUnitTestSuite`): A list of test suites to include in the report.
             prettyprint (:obj:`bool`, optional): Whether to pretty-print the XML output. Defaults to True.
 
         Returns:
@@ -618,7 +618,7 @@ class JUnitReporter:
         """Generate the JUnit report and write it to a file in XML format.
 
         Args:
-            test_suites (:obj:`list` of :class:`~TestSuite`): A list of test suites to include in the report.
+            test_suites (:obj:`list` of :class:`~JUnitTestSuite`): A list of test suites to include in the report.
             filename (:obj:`str`, optional): The name of the output file. Defaults to 'report.xml'.
             prettyprint (:obj:`bool`, optional): Whether to pretty-print the XML output. Defaults to True.
 

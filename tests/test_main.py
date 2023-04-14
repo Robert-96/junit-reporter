@@ -1,11 +1,11 @@
 import random
 from datetime import datetime
 
-from junit_reporter import JUnitReporter, TestCase, TestSuite
+from junit_reporter import JUnitReporter, JUnitTestCase, JUnitTestSuite
 
 
 def generate_test_case(index):
-    test_case = TestCase(
+    test_case = JUnitTestCase(
         "Test Case #{}".format(index),
         assertions=random.randint(0, index),
         stdout="Output: {}.".format(index),
@@ -42,13 +42,13 @@ def generate_test_cases():
 
 def generate_test_suites():
     return [
-        TestSuite("Test Suite #{}".format(x), test_cases=generate_test_cases()) for x in range(10)
+        JUnitTestSuite("Test Suite #{}".format(x), test_cases=generate_test_cases()) for x in range(10)
     ]
 
 
 def test_happy_flow(tmpdir):
-    test_case = TestCase("Test Case #1", elapsed_seconds=10)
-    test_suite = TestSuite("Test Suite #1", test_cases=[test_case])
+    test_case = JUnitTestCase("Test Case #1", elapsed_seconds=10)
+    test_suite = JUnitTestSuite("Test Suite #1", test_cases=[test_case])
     junit_xml = JUnitReporter([test_suite])
 
     assert junit_xml.to_string() != ""

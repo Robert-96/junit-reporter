@@ -4,12 +4,14 @@ import atexit
 import functools
 import logging
 
-from .xml import JUnitReporter, TestSuite
+from .xml import JUnitReporter, JUnitTestSuite
 
 logger = logging.getLogger(__name__)
 
 
 class ReporterFactory:
+    """A factory class for creating and managing JUnitReporters."""
+
     reporters = {}
 
     @classmethod
@@ -19,10 +21,10 @@ class ReporterFactory:
         if not filename:
             filename = "report.xml"
 
-        reporter = cls.reporters.get(filename, None)
+        reporter = cls.reporters.get(filename)
 
         if not reporter:
-            logger.debug("Create a new JUnitReporter.")
+            logger.debug("Creating a new JUnitReporter instance for {!r}.".format(filename))
 
             reporter = JUnitReporter()
             cls.reporters[filename] = reporter
@@ -31,27 +33,46 @@ class ReporterFactory:
 
         return reporter
 
+    @classmethod
+    def clear(cls):
+        cls.reporters.clear()
+
+    @classmethod
+    def len(cls):
+        return len(cls.reporters)
+
 
 class TestSuiteFactory:
+    """A factory class for creating and managing JUnitTestSuite."""
+
     test_suites = {}
 
     @classmethod
     def get(cls, name, reporter=None, **kwargs):
-        """Returns a TestSuite instance for the given name."""
+        """Returns a JUnitTestSuite instance for the given name."""
 
-        reporter = ReporterFactory.get(filename=reporter)
-        test_suite = cls.test_suites.get(name, None)
+        test_suite = cls.test_suites.get(name)
 
         if not test_suite:
-            test_suite = TestSuite(name, **kwargs)
+            test_suite = JUnitTestSuite(name, **kwargs)
+
+            reporter = ReporterFactory.get(filename=reporter)
             reporter.add_test_suite(test_suite)
 
             cls.test_suites[name] = test_suite
 
         return test_suite
 
+    @classmethod
+    def clear(cls):
+        cls.test_suites.clear()
 
-def test_case(*args, test_suite=None, **kwargs):
+    @classmethod
+    def len(cls):
+        return len(cls.test_suites)
+
+
+def junit_test_case(*args, test_suite=None, **kwargs):
     """Create a new test case.
 
     Args:
@@ -82,7 +103,7 @@ def test_case(*args, test_suite=None, **kwargs):
     return decorator
 
 
-def test_suite(_func=None, *, name=None, reporter=None, **kwargs):
+def junit_test_suite(_func=None, *, name=None, reporter=None, **kwargs):
     """Create a new test suite.
 
     Args:

@@ -1,27 +1,50 @@
-import unittest
-
-from junit_reporter import JUnitReporter
-from junit_reporter.decorators import junit_reporter, test_case, test_suite
-
-reporter = JUnitReporter("report.xml")
+import pytest
+from junit_reporter.decorators import ReporterFactory, TestSuiteFactory, \
+    junit_reporter, junit_test_case, junit_test_suite
 
 
-@test_suite(reporter=reporter)
-class TestStringMethods(unittest.TestCase):
+@pytest.fixture
+def reporter_factory():
+    ReporterFactory.clear()
 
-    @test_case()
-    def test_upper(self):
-        self.assertEqual('foo'.upper(), 'FOO')
+    yield ReporterFactory
 
-    @test_case()
-    def test_isupper(self):
-        self.assertTrue('FOO'.isupper())
-        self.assertFalse('Foo'.isupper())
+    ReporterFactory.clear()
 
-    @test_case()
-    def test_split(self):
-        s = 'hello world'
-        self.assertEqual(s.split(), ['hello', 'world'])
-        # Check that s.split fails when the separator is not a string
-        with self.assertRaises(TypeError):
-            s.split(2)
+
+@pytest.fixture
+def test_suite_factory():
+    TestSuiteFactory.clear()
+
+    yield TestSuiteFactory
+
+    TestSuiteFactory.clear()
+
+
+def test_junit_reporter_decorator(reporter_factory):
+    def to_be_decorated():
+        pass
+
+    assert reporter_factory.len() == 0
+
+    junit_reporter(to_be_decorated)
+
+    assert reporter_factory.len() == 1
+
+
+def test_test_suite_decorator(test_suite_factory):
+    def to_be_decorated():
+        pass
+
+    assert test_suite_factory.len() == 0
+
+    junit_test_suite(to_be_decorated)
+
+    assert test_suite_factory.len() == 1
+
+
+def test_test_case_decorator():
+    def to_be_decorated():
+        pass
+
+    junit_test_case(to_be_decorated)
