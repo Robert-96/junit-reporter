@@ -556,7 +556,7 @@ class JUnitReporter:
 
         """
 
-        xml_string = self.to_string()
+        xml_string = self.to_string(prettyprint=prettyprint)
 
         with open(filename, "w") as fp:
             fp.write(xml_string)
