@@ -245,7 +245,7 @@ class JUnitTestCase:
         self.timestamp = datetime.datetime.now()
 
     def finish(self):
-        """Set the elapsed seconds based on the timestamp."""
+        """Set the elapsed seconds based on the start timestamp."""
 
         if not self.timestamp:
             return
