@@ -133,5 +133,5 @@ dmypy.json
 .vscode
 
 # Tests
-report.xml
+report*.xml
 index.html
