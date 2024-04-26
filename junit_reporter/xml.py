@@ -170,8 +170,8 @@ class JUnitTestCase:
     """
 
     def __init__(self, name, classname=None, stdout=None, stderr=None, assertions=None, timestamp=None,
-                 elapsed_seconds=None, status=None, category=None, filename=None, line=None, log=None, url=None,
-                 enabled=True, allow_multiple_subelements=False):
+                 elapsed_seconds=None, status=None, filename=None, line=None, log=None, url=None, enabled=True,
+                 allow_multiple_subelements=False):
 
         self.name = name
         self.classname = classname
@@ -183,7 +183,6 @@ class JUnitTestCase:
         self.elapsed_seconds = elapsed_seconds
 
         self.status = status
-        self.category = category
 
         self.filename = filename
         self.line = line
@@ -193,14 +192,14 @@ class JUnitTestCase:
         self.assertions = assertions
 
         self.enabled = enabled
+        self._skipped = {}
         self._errors = []
         self._failures = []
-        self._skipped = []
 
         self.allow_multiple_subelements = allow_multiple_subelements
 
     def __repr__(self):
-        return ""
+        return f"{self.__class__.__name__}({self.name!r})"
 
     @property
     def is_enabled(self):
@@ -233,16 +232,10 @@ class JUnitTestCase:
         return self.failures > 0
 
     @property
-    def skipped(self):
-        """The total number of skips."""
-
-        return len(self._skipped)
-
-    @property
     def is_skipped(self):
         """Returns ``True`` if this test case has been skipped."""
 
-        return self.skipped > 0
+        return bool(self._skipped)
 
     @property
     def attributes(self):
@@ -260,8 +253,6 @@ class JUnitTestCase:
             attributes["classname"] = str(self.classname)
         if self.status:
             attributes["status"] = str(self.status)
-        if self.category:
-            attributes["class"] = str(self.category)
         if self.filename:
             attributes["file"] = str(self.filename)
         if self.line:
@@ -284,8 +275,8 @@ class JUnitTestCase:
         for failure in self._failures:
             xml_element.append(generate_failure_xml(**failure))
 
-        for skipped in self._skipped:
-            xml_element.append(generate_skipped_xml(**skipped))
+        if self._skipped:
+            xml_element.append(generate_skipped_xml(**self._skipped))
 
         if self.stdout:
             xml_element.append(generate_stdout_xml(self.stdout))
@@ -308,6 +299,20 @@ class JUnitTestCase:
 
         delta = datetime.datetime.now() - self.timestamp
         self.elapsed_seconds = delta.total_seconds()
+
+    def skip(self, message=None, output=None):
+        """Mark this test cases as skipped, if the test was not executed.
+
+        Args:
+            message (:obj:`str`): The message/description string why the test case was skipped.
+            output (:obj:`str`): The skip output.
+
+        """
+
+        self._skipped = {
+            "message": message,
+            "output": output
+        }
 
     def add_error(self, message=None, output=None, error_type=None):
         """Adds an error to the test case. Errors indicates that the test errored. An errored test had an unanticipated
@@ -361,25 +366,6 @@ class JUnitTestCase:
             self._failures.append(failure)
         else:
             self._failures = [failure]
-
-    def add_skipped(self, message=None, output=None):
-        """Adds a skipped to the test case. If the test was not executed.
-
-        Args:
-            message (:obj:`str`): The message/description string why the test case was skipped.
-            output (:obj:`str`): The skip output.
-
-        """
-
-        skipped = {
-            "message": message,
-            "output": output
-        }
-
-        if self.allow_multiple_subelements:
-            self._skipped.append(skipped)
-        else:
-            self._skipped = [skipped]
 
 
 class JUnitTestSuite:

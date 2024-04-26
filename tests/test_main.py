@@ -29,8 +29,8 @@ def generate_test_case(index):
         )
 
     if test_case_type == "SKIP":
-        test_case.add_skipped(
-            message="Skiped.",
+        test_case.skip(
+            message="Skipped.",
         )
 
     return test_case
@@ -46,12 +46,14 @@ def generate_test_suites():
     ]
 
 
-def test_happy_flow(tmpdir):
+def test_happy_flow():
     test_case = JUnitTestCase("Test Case #1", elapsed_seconds=10)
     test_suite = JUnitTestSuite("Test Suite #1", test_cases=[test_case])
     junit_xml = JUnitReporter([test_suite])
 
     assert junit_xml.to_string() != ""
+    assert junit_xml.to_string(prettyprint=False) != ""
+    assert len(junit_xml.to_string()) > len(junit_xml.to_string(prettyprint=False))
 
 
 def test_xml(tmpdir):
