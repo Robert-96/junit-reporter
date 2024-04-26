@@ -310,13 +310,15 @@ class JUnitTestCase:
         self.elapsed_seconds = delta.total_seconds()
 
     def add_error(self, message=None, output=None, error_type=None):
-        """Adds an error to the test case. Errors indicates that the test errored. An errored test had an unanticipated problem.
-        For example an unchecked throwable (exception), crash or a problem with the implementation of the test.
+        """Adds an error to the test case. Errors indicates that the test errored. An errored test had an unanticipated
+        problem. For example an unchecked throwable (exception), crash or a problem with the implementation of the test.
 
         Args:
             message (:obj:`str`): The error message.
-            output (:obj:`str`): The failure description, should contain relevant data for the error (e.g., a stack trace).
-            error_type (:obj:`str`): The type of error that occurred. If an exception is thrown the full class name of the exception.
+            output (:obj:`str`): The failure description, should contain relevant data for the error (e.g., a stack
+                trace).
+            error_type (:obj:`str`): The type of error that occurred. If an exception is thrown the full class name of
+                the exception.
 
         """
 
@@ -335,13 +337,13 @@ class JUnitTestCase:
             self._errors = [error]
 
     def add_failure(self, message=None, output=None, failure_type=None):
-        """Adds a failure to the test case. Failure indicates that the test failed.
-        A failure is a condition which the code has explicitly failed by using the mechanisms for that purpose.
-        For example via an ``AssertException``.
+        """Adds a failure to the test case. Failure indicates that the test failed. A failure is a condition which the
+        code has explicitly failed by using the mechanisms for that purpose. For example via an ``AssertException``.
 
         Args:
             message (:obj:`str`): The message specified in the assert.
-            output (:obj:`str`): The failure description, should contain relevant data for the failure (e.g., a stack trace).
+            output (:obj:`str`): The failure description, should contain relevant data for the failure (e.g., a stack
+                trace).
             failure_type (:obj:`str`): The type of the assert.
 
         """
