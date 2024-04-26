@@ -58,6 +58,94 @@ def xml_safe(value):
     return illegal_regex.sub("?", value)
 
 
+def generate_error_xml(message=None, output=None, type=None):
+    """Generates the error XML."""
+
+    attributes = {"type": "error"}
+
+    if message:
+        attributes["message"] = str(message)
+
+    if type:
+        attributes["type"] = str(type)
+
+    error_element = ET.Element("error", attributes)
+
+    if output:
+        error_element.text = str(output)
+
+    return error_element
+
+
+def generate_failure_xml(message=None, output=None, type=None):
+    """Generates the failure XML."""
+
+    attributes = {"type": "failure"}
+
+    if message:
+        attributes["message"] = str(message)
+
+    if type:
+        attributes["type"] = str(type)
+
+    failure_element = ET.Element("failure", attributes)
+
+    if output:
+        failure_element.text = str(output)
+
+    return failure_element
+
+
+def generate_skipped_xml(message=None, output=None):
+    """Generates the skipped XML."""
+
+    attributes = {"type": "skipped"}
+
+    if message:
+        attributes["message"] = str(message)
+
+    skipped_element = ET.Element("skipped", attributes)
+
+    if output:
+        skipped_element.text = str(output)
+
+    return skipped_element
+
+
+def generate_properties_xml(properties):
+    """Generates the properties XML."""
+
+    properties_element = ET.Element("properties")
+
+    for key, value in properties.items():
+        attributes = {
+            "name": str(key),
+            "value": str(value)
+        }
+
+        ET.SubElement(properties_element, "property", attributes)
+
+    return properties_element
+
+
+def generate_stdout_xml(stdout):
+    """Generates the stdout XML."""
+
+    stdout_element = ET.Element("system-out")
+    stdout_element.text = str(stdout)
+
+    return stdout_element
+
+
+def generate_stderr_xml(stderr):
+    """Generates the stderr XML."""
+
+    stderr_element = ET.Element("system-err")
+    stderr_element.text = str(stderr)
+
+    return stderr_element
+
+
 class JUnitTestCase:
     """This class is designed to store and manage information related to the execution of a single test case.
 
@@ -105,11 +193,14 @@ class JUnitTestCase:
         self.assertions = assertions
 
         self.enabled = enabled
-        self.errors = []
-        self.failures = []
-        self.skipped = []
+        self._errors = []
+        self._failures = []
+        self._skipped = []
 
         self.allow_multiple_subelements = allow_multiple_subelements
+
+    def __repr__(self):
+        return ""
 
     @property
     def is_enabled(self):
@@ -118,22 +209,40 @@ class JUnitTestCase:
         return self.enabled
 
     @property
+    def errors(self):
+        """The total number of errors."""
+
+        return sum(1 for error in self._errors if error["message"] or error["output"])
+
+    @property
     def is_error(self):
         """Returns ``True`` if this test case is an error."""
 
-        return sum(1 for error in self.errors if error["message"] or error["output"]) > 0
+        return self.errors > 0
+
+    @property
+    def failures(self):
+        """The total number of failures."""
+
+        return sum(1 for failure in self._failures if failure["message"] or failure["output"])
 
     @property
     def is_failure(self):
         """Returns ``True`` if this test case is a failure."""
 
-        return sum(1 for failure in self.failures if failure["message"] or failure["output"]) > 0
+        return self.failures > 0
+
+    @property
+    def skipped(self):
+        """The total number of skips."""
+
+        return len(self._skipped)
 
     @property
     def is_skipped(self):
         """Returns ``True`` if this test case has been skipped."""
 
-        return len(self.skipped) > 0
+        return self.skipped > 0
 
     @property
     def attributes(self):
@@ -164,80 +273,27 @@ class JUnitTestCase:
 
         return attributes
 
-    def _error_xml(self, root_element):
-        """Generates the error XML."""
-
-        for error in self.errors:
-            if error["message"] or error["output"]:
-                attributes = {"type": "error"}
-
-                if error["message"]:
-                    attributes["message"] = str(error["message"])
-
-                if error["type"]:
-                    attributes["type"] = str(error["type"])
-
-                error_element = ET.Element("error", attributes)
-
-                if error["output"]:
-                    error_element.text = str(error["output"])
-
-                root_element.append(error_element)
-
-    def _failure_xml(self, root_element):
-        """Generates the failure XML."""
-
-        for failure in self.failures:
-            if failure["output"] or failure["message"]:
-                attributes = {"type": "failure"}
-
-                if failure["message"]:
-                    attributes["message"] = str(failure["message"])
-
-                if failure["type"]:
-                    attributes["type"] = str(failure["type"])
-
-                failure_element = ET.Element("failure", attributes)
-
-                if failure["output"]:
-                    failure_element.text = str(failure["output"])
-
-                root_element.append(failure_element)
-
-    def _skipped_xml(self, root_element):
-        """Generates the skipped XML."""
-
-        for skipped in self.skipped:
-            attributes = {"type": "skipped"}
-
-            if skipped["message"]:
-                attributes["message"] = str(skipped["message"])
-
-            skipped_element = ET.Element("skipped", attributes)
-
-            if skipped["output"]:
-                skipped_element.text = str(skipped["output"])
-
-            root_element.append(skipped_element)
-
-    def _xml(self, root_element):
+    def _xml(self):
         """Generates the test case XML."""
 
-        element = ET.SubElement(root_element, "testcase", self.attributes)
+        xml_element = ET.Element("testcase", self.attributes)
 
-        self._error_xml(element)
-        self._failure_xml(element)
-        self._skipped_xml(element)
+        for error in self._errors:
+            xml_element.append(generate_error_xml(**error))
+
+        for failure in self._failures:
+            xml_element.append(generate_failure_xml(**failure))
+
+        for skipped in self._skipped:
+            xml_element.append(generate_skipped_xml(**skipped))
 
         if self.stdout:
-            stdout_element = ET.Element("system-out")
-            stdout_element.text = str(self.stdout)
-            element.append(stdout_element)
+            xml_element.append(generate_stdout_xml(self.stdout))
 
         if self.stderr:
-            stderr_element = ET.Element("system-err")
-            stderr_element.text = str(self.stderr)
-            element.append(stderr_element)
+            xml_element.append(generate_stderr_xml(self.stderr))
+
+        return xml_element
 
     def start(self):
         """Set the start timestamps."""
@@ -250,19 +306,22 @@ class JUnitTestCase:
         if not self.timestamp:
             return
 
-        elapsed_seconds = datetime.datetime.now() - self.timestamp
-        elapsed_seconds = elapsed_seconds.total_seconds()
-        self.elapsed_seconds = elapsed_seconds
+        delta = datetime.datetime.now() - self.timestamp
+        self.elapsed_seconds = delta.total_seconds()
 
     def add_error(self, message=None, output=None, error_type=None):
-        """Adds an error message, output, or both to the test case.
+        """Adds an error to the test case. Errors indicates that the test errored. An errored test had an unanticipated problem.
+        For example an unchecked throwable (exception), crash or a problem with the implementation of the test.
 
         Args:
             message (:obj:`str`): The error message.
-            output (:obj:`str`): The error output.
-            error_type (:obj:`str`): The error type.
+            output (:obj:`str`): The failure description, should contain relevant data for the error (e.g., a stack trace).
+            error_type (:obj:`str`): The type of error that occurred. If an exception is thrown the full class name of the exception.
 
         """
+
+        if message is None and output is None:
+            return
 
         error = {
             "message": message,
@@ -271,20 +330,24 @@ class JUnitTestCase:
         }
 
         if self.allow_multiple_subelements:
-            if message or output:
-                self.errors.append(error)
+            self._errors.append(error)
         else:
-            self.errors = [error]
+            self._errors = [error]
 
     def add_failure(self, message=None, output=None, failure_type=None):
-        """Adds a failure message, output, or both to the test case.
+        """Adds a failure to the test case. Failure indicates that the test failed.
+        A failure is a condition which the code has explicitly failed by using the mechanisms for that purpose.
+        For example via an ``AssertException``.
 
         Args:
-            message (:obj:`str`): The failure message.
-            output (:obj:`str`): The failure output.
-            failure_type (:obj:`str`): The failure type.
+            message (:obj:`str`): The message specified in the assert.
+            output (:obj:`str`): The failure description, should contain relevant data for the failure (e.g., a stack trace).
+            failure_type (:obj:`str`): The type of the assert.
 
         """
+
+        if message is None and output is None:
+            return
 
         failure = {
             "message": message,
@@ -293,16 +356,15 @@ class JUnitTestCase:
         }
 
         if self.allow_multiple_subelements:
-            if message or output:
-                self.failures.append(failure)
+            self._failures.append(failure)
         else:
-            self.failures = [failure]
+            self._failures = [failure]
 
     def add_skipped(self, message=None, output=None):
-        """Adds a skipped message, output, or both to the test case.
+        """Adds a skipped to the test case. If the test was not executed.
 
         Args:
-            message (:obj:`str`): The skip message.
+            message (:obj:`str`): The message/description string why the test case was skipped.
             output (:obj:`str`): The skip output.
 
         """
@@ -313,10 +375,9 @@ class JUnitTestCase:
         }
 
         if self.allow_multiple_subelements:
-            if message or output:
-                self.skipped.append(skipped)
+            self._skipped.append(skipped)
         else:
-            self.skipped = [skipped]
+            self._skipped = [skipped]
 
 
 class JUnitTestSuite:
@@ -420,37 +481,20 @@ class JUnitTestSuite:
 
         return attributes
 
-    def _properties_xml(self, root_element):
-        """Generates the properties XML."""
-
-        properties_element = ET.SubElement(root_element, "properties")
-
-        for key, value in self.properties.items():
-            attributes = {
-                "name": str(key),
-                "value": str(value)
-            }
-
-            ET.SubElement(properties_element, "property", attributes)
-
     def _xml(self):
-        """Generates the XML document for the JUnit test suites."""
-
         xml_element = ET.Element("testsuite", self.attributes)
 
         if self.properties:
-            self._properties_xml(xml_element)
+            xml_element.append(generate_properties_xml(self.properties))
 
         if self.stdout:
-            stdout_element = ET.SubElement(xml_element, "system-out")
-            stdout_element.text = str(self.stdout)
+            xml_element.append(generate_stdout_xml(self.stdout))
 
         if self.stderr:
-            stderr_element = ET.SubElement(xml_element, "system-err")
-            stderr_element.text = str(self.stderr)
+            xml_element.append(generate_stderr_xml(self.stderr))
 
         for test_case in self.test_cases:
-            test_case._xml(xml_element)
+            xml_element.append(test_case._xml())
 
         return xml_element
 
@@ -501,8 +545,7 @@ class JUnitReporter:
         xml_element = ET.Element("testsuites")
 
         for test_suite in self.test_suites:
-            test_suite_xml = test_suite._xml()
-            xml_element.append(test_suite_xml)
+            xml_element.append(test_suite._xml())
 
         for key, value in self.attributes.items():
             xml_element.set(key, str(value))
