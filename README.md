@@ -94,6 +94,12 @@ To run tests, run the following command:
 pytest tests
 ```
 
+### Running the examples
+
+```console
+python examples/decorators.py
+```
+
 ### Building the documentation
 
 To build the documentation, run the following command:
@@ -102,6 +108,11 @@ To build the documentation, run the following command:
 cd docs
 make docs
 ```
+
+## References
+
+* https://github.com/jenkinsci/xunit-plugin/blob/master/src/main/resources/org/jenkinsci/plugins/xunit/types/model/xsd/junit-10.xsd
+* https://github.com/testmoapp/junitxml
 
 ## License
 
