@@ -1,5 +1,5 @@
-import random
 import datetime
+import random
 
 from junit_reporter import JUnitTestCase, JUnitTestSuite
 
