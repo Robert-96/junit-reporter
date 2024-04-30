@@ -1,5 +1,4 @@
 import pytest
-
 from junit_reporter.decorators import (
     ReporterFactory,
     TestSuiteFactory,
