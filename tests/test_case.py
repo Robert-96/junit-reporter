@@ -8,15 +8,15 @@ from .conftest import FAKE_NOW
 
 def test_repr():
     test_case = JUnitTestCase(
-        "Test Case #1",
+        "Test Bar",
         status="Failed",
-        classname="TestModel",
-        filename="test.py",
+        classname="TestBar",
+        filename="test_bar.py",
         line=24,
         assertions=3,
-        log="file.log",
+        log="bar.log",
         url="localhost:2424",
-        elapsed_seconds=10,
+        elapsed_seconds=19,
         timestamp=datetime.datetime(2020, 8, 24)
     )
 
@@ -216,27 +216,27 @@ def test_empty_attributes():
 
 def test_attributes():
     test_case = JUnitTestCase(
-        "Test Case #1",
-        status="Failed",
-        classname="TestModel",
-        filename="test.py",
-        line=24,
-        assertions=3,
-        log="file.log",
+        "Foo Test Case",
+        status="Skipped",
+        classname="TestFoo",
+        filename="test_foo.py",
+        line=42,
+        assertions=7,
+        log="foo.log",
         url="localhost:2424",
-        elapsed_seconds=10,
+        elapsed_seconds=9,
         timestamp=datetime.datetime(2020, 8, 24)
     )
 
     expected = {
-        "name": "Test Case #1",
-        "status": "Failed",
-        "classname": "TestModel",
-        "file": "test.py",
-        "line": "24",
-        "assertions": "3",
-        "time": "10",
-        "log": "file.log",
+        "name": "Foo Test Case",
+        "status": "Skipped",
+        "classname": "TestFoo",
+        "file": "test_foo.py",
+        "line": "42",
+        "assertions": "7",
+        "time": "9",
+        "log": "foo.log",
         "url": "localhost:2424",
         "timestamp": "2020-08-24 00:00:00"
     }
