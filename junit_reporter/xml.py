@@ -551,6 +551,10 @@ class JUnitReporter:
         return xml_element
 
     @property
+    def suites(self):
+        return len(self.test_suites)
+
+    @property
     def attributes(self):
         """Compute the summary attributes of the JUnit report.
 
