@@ -38,7 +38,7 @@ class ReporterFactory:
         cls.reporters.clear()
 
     @classmethod
-    def len(cls):
+    def count(cls):
         return len(cls.reporters)
 
 
@@ -48,7 +48,7 @@ class TestSuiteFactory:
     test_suites = {}
 
     @classmethod
-    def get(cls, name, reporter=None, **kwargs):
+    def get(cls, name, reporter=None, prettyprint=True, **kwargs):
         """Returns a JUnitTestSuite instance for the given name."""
 
         test_suite = cls.test_suites.get(name)
@@ -56,7 +56,7 @@ class TestSuiteFactory:
         if not test_suite:
             test_suite = JUnitTestSuite(name, **kwargs)
 
-            reporter = ReporterFactory.get(filename=reporter)
+            reporter = ReporterFactory.get(filename=reporter, prettyprint=prettyprint)
             reporter.add_test_suite(test_suite)
 
             cls.test_suites[name] = test_suite
@@ -68,11 +68,11 @@ class TestSuiteFactory:
         cls.test_suites.clear()
 
     @classmethod
-    def len(cls):
+    def count(cls):
         return len(cls.test_suites)
 
 
-def junit_test_case(*args, test_suite=None, **kwargs):
+def junit_test_case(_func=None, *, test_suite=None, **kwargs):
     """Create a new test case.
 
     Args:
@@ -83,7 +83,7 @@ def junit_test_case(*args, test_suite=None, **kwargs):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
-            suite = TestSuiteFactory.get(test_suite)
+            suite = TestSuiteFactory.get(test_suite or func.__qualname__.rpartition(".")[0])
             test_case = suite.create_test_case(func.__name__)
             test_case.start()
 
@@ -100,7 +100,11 @@ def junit_test_case(*args, test_suite=None, **kwargs):
 
             return result
         return wrapper
-    return decorator
+
+    if _func is None:
+        return decorator
+    else:
+        return decorator(_func)
 
 
 def junit_test_suite(_func=None, *, name=None, reporter=None, **kwargs):
