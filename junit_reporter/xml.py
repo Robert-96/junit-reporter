@@ -199,7 +199,11 @@ class JUnitTestCase:
         self.allow_multiple_subelements = allow_multiple_subelements
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({self.name!r})"
+        return f"{self.__class__.__name__}({self.name!r}, classname={self.classname!r}, stdout={self.stdout!r}, " \
+               f"stderr={self.stderr!r}, assertions={self.assertions!r}, timestamp={self.timestamp!r}, " \
+               f"elapsed_seconds={self.elapsed_seconds!r}, status={self.status!r}, filename={self.filename!r}, " \
+               f"line={self.line!r}, log={self.log!r}, url={self.url!r}, enabled={self.enabled!r}, " \
+               f"allow_multiple_subelements={self.allow_multiple_subelements!r})"
 
     @property
     def is_enabled(self):
@@ -410,9 +414,15 @@ class JUnitTestSuite:
 
         self.properties = properties
 
+    def __repr__(self):
+        return f"{self.__class__.__name__}({self.name!r}, test_cases={self.test_cases!r}, id={self.id!r}, " \
+               f"stdout={self.stdout!r}, stderr={self.stderr!r}, package={self.package!r}, " \
+               f"hostname={self.hostname!r}, filename={self.filename!r}, log={self.log!r}, " \
+               f"url={self.url!r}, timestamp={self.timestamp!r}, properties={self.properties!r})"
+
     @property
-    def assertions(self):
-        return sum(int(test_case.assertions) for test_case in self.test_cases if test_case.assertions)
+    def tests(self):
+        return len(self.test_cases)
 
     @property
     def disabled(self):
@@ -431,8 +441,8 @@ class JUnitTestSuite:
         return sum(1 for test_case in self.test_cases if test_case.is_skipped)
 
     @property
-    def tests(self):
-        return len(self.test_cases)
+    def assertions(self):
+        return sum(int(test_case.assertions) for test_case in self.test_cases if test_case.assertions)
 
     @property
     def time(self):
