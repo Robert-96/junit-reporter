@@ -1,15 +1,24 @@
 import datetime
-import xml.etree.ElementTree as ET
 
 import pytest
-
 from junit_reporter import JUnitTestCase
 
 from .conftest import FAKE_NOW
 
 
 def test_repr():
-    test_case = JUnitTestCase("Test Case #1")
+    test_case = JUnitTestCase(
+        "Test Case #1",
+        status="Failed",
+        classname="TestModel",
+        filename="test.py",
+        line=24,
+        assertions=3,
+        log="file.log",
+        url="localhost:2424",
+        elapsed_seconds=10,
+        timestamp=datetime.datetime(2020, 8, 24)
+    )
 
     assert eval(repr(test_case)).attributes == test_case.attributes
 
@@ -143,10 +152,12 @@ def test_failure_xml(failure, allow_multiple_subelements):
     failure_element = failures_element[0]
     assert failure_element.text == failure.get("output")
 
-    if failure.get("message"):
-        assert failure_element.attrib == {"message": failure.get("message"), "type": failure.get("failure_type", "failure")}
+    message = failure.get("message")
+    failure_type = failure.get("failure_type", "failure")
+    if message:
+        assert failure_element.attrib == {"message": message, "type": failure_type}
     else:
-        assert failure_element.attrib == {"type": failure.get("failure_type", "failure")}
+        assert failure_element.attrib == {"type": failure_type}
 
 
 @pytest.mark.parametrize(
