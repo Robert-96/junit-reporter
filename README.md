@@ -111,8 +111,8 @@ make docs
 
 ## References
 
-* https://github.com/jenkinsci/xunit-plugin/blob/master/src/main/resources/org/jenkinsci/plugins/xunit/types/model/xsd/junit-10.xsd
-* https://github.com/testmoapp/junitxml
+* <https://github.com/jenkinsci/xunit-plugin/blob/master/src/main/resources/org/jenkinsci/plugins/xunit/types/model/xsd/junit-10.xsd>
+* <https://github.com/testmoapp/junitxml>
 
 ## License
 
