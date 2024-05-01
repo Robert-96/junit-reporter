@@ -12,13 +12,33 @@ logger = logging.getLogger(__name__)
 
 
 class ReporterFactory:
-    """A factory class for creating and managing JUnitReporters."""
+    """A factory class for creating and managing ``JUnitReporters`` instances.
+
+    This factory class provides methods for creating and managing instances of JUnitReporters, which are responsible
+    for generating JUnit XML reports. The factory maintains a registry of created reporters to ensure that each reporter
+    instance is unique per filename.
+
+    """
 
     reporters = {}
 
     @classmethod
     def get(cls, filename=None, prettyprint=True):
-        """Returns a JUnitReporter instance for the given filename."""
+        """Get a JUnitReporter instance for the given filename.
+
+        If a reporter for the specified filename already exists in the factory's registry, it is retrieved and returned.
+        Otherwise, a new ``JUnitReporter`` instance is created, registered with the factory, and returned. The filename
+        parameter specifies the filename to which the JUnit report will be written.
+
+        Args:
+            filename (str, optional): The filename for the JUnit report. If not provided, defaults to ``"report.xml"``.
+            prettyprint (bool, optional): If set to True, the generated JUnit report will be formatted for human
+                readability (pretty-printed). Defaults to ``True``.
+
+        Returns:
+            JUnitReporter: A JUnitReporter instance associated with the given filename.
+
+        """
 
         if not filename:
             filename = "report.xml"
@@ -37,21 +57,53 @@ class ReporterFactory:
 
     @classmethod
     def clear(cls):
+        """Clear all registered reporters from the factory's registry."""
+
         cls.reporters.clear()
 
     @classmethod
     def count(cls):
+        """Get the number of reporters registered with the factory.
+
+        Returns:
+            int: The number of reporters registered with the factory.
+
+        """
+
         return len(cls.reporters)
 
 
 class TestSuiteFactory:
-    """A factory class for creating and managing JUnitTestSuite."""
+    """A factory class for creating and managing ``JUnitTestSuite`` instances.
+
+    This factory class provides methods for creating and managing instances of ``JUnitTestSuite``, which represent
+    collections of test cases. The factory maintains a registry of created test suites to ensure that each test suite
+    instance is unique per name.
+
+    """
 
     test_suites = {}
 
     @classmethod
     def get(cls, name, reporter=None, prettyprint=True, **kwargs):
-        """Returns a JUnitTestSuite instance for the given name."""
+        """Get a JUnitTestSuite instance for the given name.
+
+        If a test suite with the specified name already exists in the factory's registry, it is retrieved and returned.
+        Otherwise, a new JUnitTestSuite instance is created with the specified name and optional additional parameters.
+        Additionally, if a reporter filename is provided, a JUnit reporter instance is created and associated with
+        the test suite.
+
+        Args:
+            name (str): The name of the test suite.
+            reporter (str, optional): The filename of the reporter to be associated with the test suite.
+            prettyprint (bool, optional): If set to True, the generated JUnit report for the test suite will be
+                formatted for human readability (pretty-printed). Defaults to True.
+            **kwargs: Additional keyword arguments passed to the JUnitTestSuite constructor.
+
+        Returns:
+            JUnitTestSuite: A JUnitTestSuite instance associated with the given name.
+
+        """
 
         test_suite = cls.test_suites.get(name)
 
@@ -67,10 +119,19 @@ class TestSuiteFactory:
 
     @classmethod
     def clear(cls):
+        """Clear all registered test suites from the factory's registry."""
+
         cls.test_suites.clear()
 
     @classmethod
     def count(cls):
+        """Get the number of test suites registered with the factory.
+
+        Returns:
+            int: The number of test suites registered with the factory.
+
+        """
+
         return len(cls.test_suites)
 
 
