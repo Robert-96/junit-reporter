@@ -107,7 +107,8 @@ def discover(cls, test_suite_name=None, pattern=None):
     """Discover and convert test methods within a test class to JUnit test cases.
 
     This function iterates over the attributes of the given test class ``cls``, identifies test methods based on the
-    provided ``pattern``, and converts them into JUnit test cases by wrapping them with the ``junit_test_case`` decorator.
+    provided ``pattern``, and converts them into JUnit test cases by wrapping them with the ``junit_test_case``
+    decorator.
 
     Args:
         cls (class): The test class containing test methods to be discovered and converted.
@@ -155,7 +156,7 @@ def junit_test_case(_func=None, *, test_suite=None, **kwargs):
         _func (callable, optional): The function to be decorated. Defaults to ``None``.
         test_suite (str, optional): The name of the test suite to which the test case belongs.
             If not provided, the test suite name is derived from the enclosing class name.
-        **kwargs: Additional keyword arguments are ignored.
+        **kwargs: Additional keyword arguments are passed to the ``JUnitTestCase`` to customize the test case.
 
     Returns:
         callable: The decorated function.
@@ -176,11 +177,13 @@ def junit_test_case(_func=None, *, test_suite=None, **kwargs):
 
     """
 
+    test_case_kwargs = kwargs
+
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             suite = TestSuiteFactory.get(test_suite or func.__qualname__.rpartition(".")[0])
-            test_case = suite.create_test_case(func.__name__)
+            test_case = suite.create_test_case(func.__name__, **test_case_kwargs)
             test_case.start()
 
             try:
@@ -228,9 +231,9 @@ def junit_test_suite(_func=None, *, name=None, reporter=None, auto_discover=Fals
         ... def my_test_suite():
         ...     pass
 
-        In this example, a test suite named ``"MyTestSuite"`` is created with a custom reporter filename ``"report.xml"``.
-        Auto-discovery is enabled, and test methods within the decorated function will be discovered based on the
-        specified pattern ``"test_*"``.
+        In this example, a test suite named ``"MyTestSuite"`` is created with a custom reporter filename
+        ``"report.xml"``. Auto-discovery is enabled, and test methods within the decorated function will be discovered
+        based on the specified pattern ``"test_*"``.
 
     """
 
@@ -258,8 +261,8 @@ def junit_reporter(_func=None, *, filename=None, prettyprint=True):
     Args:
         _func (callable, optional): The function to be decorated. Defaults to ``None``.
         filename (str): The filename to write the JUnit report to.
-        prettyprint (bool, optional): If set to ``True``, the generated JUnit report will be formatted for human readability
-            (pretty-printed). Defaults to ``True``.
+        prettyprint (bool, optional): If set to ``True``, the generated JUnit report will be formatted for human
+            readability (pretty-printed). Defaults to ``True``.
 
     Returns:
         callable: The decorated function.
