@@ -7,6 +7,11 @@ FAKE_NOW = datetime.datetime(2020, 8, 24, 19, 19, 19)
 FAKE_NOW_2 = FAKE_NOW + datetime.timedelta(seconds=7)
 
 
+def assert_not_called_with(mock, *args, **kwargs):
+    with pytest.raises(AssertionError):
+        mock.assert_any_call(*args, **kwargs)
+
+
 @pytest.fixture()
 def mock_datetime_now(monkeypatch):
     datetime_mock = MagicMock()
