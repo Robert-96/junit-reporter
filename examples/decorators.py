@@ -1,42 +1,38 @@
 import unittest
 
-from junit_reporter import junit_reporter, test_case, test_suite
+from junit_reporter import junit_reporter, junit_test_case, junit_test_suite
 
 
+@junit_test_suite(name="TestStringMethods", reporter="report.xml")
 @junit_reporter(filename="report.xml", prettyprint=True)
-@test_suite(name="TestStringMethods", reporter="report.xml")
 class TestStringMethods(unittest.TestCase):
-    @test_case(test_suite="TestStringMethods")
+
+    @junit_test_case()
     def test_upper(self):
         self.assertEqual("foo".upper(), "FOO")
 
-    @test_case(test_suite="TestStringMethods")
+    @junit_test_case()
     def test_isupper(self):
         self.assertTrue("FOO".isupper())
         self.assertFalse("Foo".isupper())
 
-    @test_case(test_suite="TestStringMethods")
-    def test_split(self):
-        s = "hello world"
-        self.assertEqual(s.split(), ["hello", "world"])
-        # check that s.split fails when the separator is not a string
-        with self.assertRaises(TypeError):
-            s.split(2)
+    @junit_test_case()
+    def test_fail(self):
+        self.assertTrue(False)
 
 
-# @test_suite(reporter="report.xml")
-class TestExample(unittest.TestCase):
-    @test_case(test_suite="TestExample")
-    def test_nothing(self):
-        self.assertTrue(True)
+@junit_test_suite(reporter="report-autodetect.xml", prettyprint=True, auto_discover=True)
+class TestAutoDetect(unittest.TestCase):
 
-    @test_case(test_suite="TestExample")
-    def test_format(self):
-        pass
+    def setUp(self):
+        self.foo = "FOO"
 
-    @test_case(test_suite="TestExample")
-    def test_maybe_skipped(self):
-        pass
+    def test_lower(self):
+        self.assertEqual("FOO".lower(), "foo")
+
+    def test_islower(self):
+        self.assertTrue("foo".islower())
+        self.assertFalse("Foo".islower())
 
 
 if __name__ == "__main__":
