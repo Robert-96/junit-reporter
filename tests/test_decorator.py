@@ -1,11 +1,17 @@
 import unittest.mock as mock
-from .conftest import assert_not_called_with
 
 import pytest
-from junit_reporter.decorators import (ReporterFactory, TestSuiteFactory,
-                                       discover, is_test_method,
-                                       junit_reporter, junit_test_case,
-                                       junit_test_suite)
+from junit_reporter.decorators import (
+    ReporterFactory,
+    TestSuiteFactory,
+    discover,
+    is_test_method,
+    junit_reporter,
+    junit_test_case,
+    junit_test_suite
+)
+
+from .conftest import assert_not_called_with
 
 
 class MockTestClass:
