@@ -110,6 +110,35 @@ def test_junit_reporter_decorator(reporter_factory):
     assert reporter_factory.count() == 1
 
 
+def test_junit_reporter_decorator_with_same_name(reporter_factory):
+    def to_be_decorated():
+        pass
+
+    assert reporter_factory.count() == 0
+
+    junit_reporter(to_be_decorated, filename="reporter2.xml")
+    assert reporter_factory.count() == 1
+
+    junit_reporter(to_be_decorated, filename="reporter2.xml")
+    assert reporter_factory.count() == 1
+
+
+def test_junit_reporter_decorator_with_same_name2(reporter_factory):
+    assert reporter_factory.count() == 0
+
+    @junit_reporter(filename="reporter2.xml")
+    def to_be_decorated():
+        pass
+
+    assert reporter_factory.count() == 1
+
+    junit_reporter(to_be_decorated, filename="reporter2.xml")
+    assert reporter_factory.count() == 1
+
+    junit_reporter(to_be_decorated, filename="reporter2.xml")
+    assert reporter_factory.count() == 1
+
+
 def test_test_suite_decorator(test_suite_factory):
     def to_be_decorated():
         pass
@@ -117,6 +146,18 @@ def test_test_suite_decorator(test_suite_factory):
     assert test_suite_factory.count() == 0
 
     junit_test_suite(to_be_decorated)
+
+    assert test_suite_factory.count() == 1
+
+
+def test_test_suite_decorator(test_suite_factory):
+    def to_be_decorated():
+        pass
+
+    assert test_suite_factory.count() == 0
+
+    junit_test_suite(to_be_decorated, name="TestSuite")
+    junit_test_suite(to_be_decorated, name="TestSuite")
 
     assert test_suite_factory.count() == 1
 
