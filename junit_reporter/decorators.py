@@ -108,6 +108,8 @@ class TestSuiteFactory:
         test_suite = cls.test_suites.get(name)
 
         if not test_suite:
+            logger.debug("Creating a new JUnitTestSuite instance named {!r}.".format(name))
+
             test_suite = JUnitTestSuite(name, **kwargs)
 
             reporter = ReporterFactory.get(filename=reporter, prettyprint=prettyprint)
