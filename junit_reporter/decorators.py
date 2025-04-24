@@ -15,6 +15,38 @@ from .xml import JUnitReporter, JUnitTestSuite
 logger = logging.getLogger(__name__)
 
 
+class JUnitConfig:
+    """Global configuration for the JUnit reporter."""
+
+    config = {
+        "filename": os.getenv("JUNIT_REPORT_FILENAME", "report.xml"),
+        "prettyprint": os.getenv("JUNIT_REPORT_PRETTYPRINT", "True").lower() == "true",
+        "auto_discover_pattern": os.getenv("JUNIT_REPORT_AUTO_DISCOVER_PATTERN", "test*"),
+    }
+
+    @classmethod
+    def get(cls, key, default=None):
+        """Get a configuration value."""
+
+        return cls.config.get(key, default)
+
+    @classmethod
+    def set(cls, key, value):
+        """Set a configuration value."""
+
+        cls.config[key] = value
+
+    @classmethod
+    def reset(cls):
+        """Reset all configuration values to their defaults."""
+
+        cls.config = {
+            "filename": "report.xml",
+            "prettyprint": True,
+            "auto_discover_pattern": "test*",
+        }
+
+
 class ReporterFactory:
     """A factory class for creating and managing ``JUnitReporters`` instances.
 
