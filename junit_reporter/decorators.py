@@ -5,6 +5,10 @@ import fnmatch
 import functools
 import inspect
 import logging
+import os
+import sys
+from io import StringIO
+from contextlib import redirect_stdout, redirect_stderr
 
 from .xml import JUnitReporter, JUnitTestSuite
 
@@ -250,7 +254,11 @@ def junit_test_case(_func=None, *, test_suite=None, **kwargs):
             test_case.start()
 
             try:
-                result = func(*args, **kwargs)
+                stdout_buffer = StringIO()
+                stderr_buffer = StringIO()
+
+                with redirect_stdout(stdout_buffer), redirect_stderr(stderr_buffer):
+                    result = func(*args, **kwargs)
             except AssertionError as error:
                 test_case.add_failure(message=str(error), failure_type=error.__class__.__name__)
                 raise
@@ -258,7 +266,16 @@ def junit_test_case(_func=None, *, test_suite=None, **kwargs):
                 test_case.add_error(message=str(error), error_type=error.__class__.__name__)
                 raise
             finally:
-                test_case.finish()
+                stdout = stdout_buffer if stdout_buffer.getvalue() else None
+                stderr = stderr_buffer if stderr_buffer.getvalue() else None
+
+                if stdout:
+                    print(stdout)
+
+                if stderr:
+                    print(stderr, file=sys.stderr)
+
+                test_case.finish(stdout=stdout, stderr=stderr)
 
             return result
         return wrapper
