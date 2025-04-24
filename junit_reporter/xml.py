@@ -295,14 +295,17 @@ class JUnitTestCase:
 
         self.timestamp = datetime.datetime.now()
 
-    def finish(self):
-        """Set the elapsed seconds based on the start timestamp."""
+    def finish(self, stdout=None, stderr=None):
+        """Set the elapsed seconds based on the start timestamp and stdout/stderr."""
 
         if not self.timestamp:
             return
 
         delta = datetime.datetime.now() - self.timestamp
         self.elapsed_seconds = delta.total_seconds()
+
+        self.stdout = stdout
+        self.stderr = stderr
 
     def skip(self, message=None, output=None):
         """Mark this test cases as skipped, if the test was not executed.
