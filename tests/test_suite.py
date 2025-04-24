@@ -3,7 +3,7 @@ import random
 
 from junit_reporter import JUnitTestCase, JUnitTestSuite
 
-from .conftest import FAKE_NOW
+from .conftest import MOCK_DATETIME_START
 
 
 def test_repr():
@@ -144,7 +144,7 @@ def test_attributes(mock_datetime_now):
         "file": "tests.py",
         "log": "tests.log",
         "url": "localhost:2424",
-        "timestamp": str(FAKE_NOW),
+        "timestamp": str(MOCK_DATETIME_START),
         "tests": "0",
         "assertions": "0",
         "disabled": "0",

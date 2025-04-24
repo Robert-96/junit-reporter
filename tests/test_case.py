@@ -3,7 +3,7 @@ import datetime
 import pytest
 from junit_reporter import JUnitTestCase
 
-from .conftest import FAKE_NOW
+from .conftest import MOCK_DATETIME_START
 
 
 def test_repr():
@@ -249,7 +249,7 @@ def test_start(mock_datetime_now):
 
     assert test_case.timestamp is None
     test_case.start()
-    assert test_case.timestamp == FAKE_NOW
+    assert test_case.timestamp == MOCK_DATETIME_START
 
 
 def test_finish(mock_datetime_now):
